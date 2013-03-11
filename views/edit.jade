@@ -1,0 +1,39 @@
+extend layout
+
+block page-scripts
+	script(src="/javascripts/jquery.jeditable.mini.js")
+	script
+		$(document).ready(function(){
+			$('.beer').children().editable('edit');
+		});
+
+block content
+	each b in beers
+		.beer
+			.brewery(id="brewery_#{b._id}") #{b.brewery}
+			.name(id="name_#{b._id}") #{b.name}
+			.style(id="style_#{b._id}") #{b.style}
+			.country(id="country_#{b._id}") #{b.country}
+			.rating(id="rating_#{b._id}") #{b.rating}
+			.notes(id="notes_#{b._id}") #{b.notes}
+			.drinkLocationCity(id="drinkLocationCity_#{b._id}")
+				if (!b.drinkLocationCity)
+					| ADD!
+				else
+					| #{b.drinkLocationCity}
+			.drinkLocationCountry(id="drinkLocationCountry_#{b._id}")
+				if (!b.drinkLocationCountry)
+					| ADD!
+				else
+					| #{b.drinkLocationCountry}
+			.drinkMonth(id="drinkMonth_#{b._id}")
+				if (b.drinkMonth === 1 && b.drinkYear === 1970)
+					| ADD!
+				else
+					| #{b.drinkMonth}
+			.drinkYear(id="drinkYear_#{b._id}")
+				if (b.drinkYear === 1970)
+					| ADD!
+				else
+					| #{b.drinkYear}
+		br

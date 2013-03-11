@@ -1,0 +1,22 @@
+extend layout
+
+block page-scripts
+	script(src="/javascripts/d3.beerviz.js")
+	script
+		$(document).ready(function(){
+			$.get("/data/json/#{dataType}",
+					function(response){
+						console.log(countByParam("#{dataType}",response));
+						console.log(reduceList(response,"drinkDate"));
+						console.log(reduceList(response,"rating"));
+						console.log(reduceList(response,"drinkMonth"));
+						console.log(reduceList(response,"drinkYear"));
+					},
+					"json"
+
+			);
+		});
+
+block content
+	| #{title}
+	.response

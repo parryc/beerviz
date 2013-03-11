@@ -1,0 +1,25 @@
+extend layout 
+
+block content
+	form(action="add",method="post",enctype="multipart/form-data")
+		input(type="text",name="brewery",placeholder="Brewery")#brewery
+		br
+		input(type="text",name="name",placeholder="Beer name")#name
+		br
+		input(type="text",name="style",placeholder="Style")#style
+		br
+		input(type="text",name="country",placeholder="Country")#country
+		br
+		input(type="text",name="rating",placeholder="Rating")#rating
+		br
+		input(type="text",name="notes",placeholder="Notes")#notes
+		br
+		input(type="text",name="drinkLocationCity",placeholder="Drink Location City")#drinkLocationCity
+		br
+		input(type="text",name="drinkLocationCountry",placeholder="Drink Location Country")#drinkLocationCountry
+		br
+		input(type="text",name="drinkMonth",placeholder="Drink Month")#drinkMonth
+		br
+		input(type="text",name="drinkYear",placeholder="Drink Year")#drinkYear
+		br
+		input(type="submit",value="Submit")

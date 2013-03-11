@@ -1,0 +1,14 @@
+extend layout
+
+block content
+	h1 Beers I Have Known and Loved
+	h3 A Tale of Data Visualization &amp; Debauchery
+	div
+	.options
+		| Look at all the options!
+	.recent
+		h2 Recent Beers
+		ol
+			each b in recent	
+				li #{b.brewery} #{b.name}: #{b.rating}
+	
