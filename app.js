@@ -81,6 +81,10 @@ app.get('/data/:type/:sort?',function(req, res){
 	});
 });
 
+app.get('/display/graph', function(req, res){
+	res.render('graph.jade',{});
+});
+
 app.get('/display/:dataType/:chartType', function(req, res){
 	res.render('chart.jade',{
 		dataType: req.params.dataType,

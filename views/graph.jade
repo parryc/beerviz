@@ -1,0 +1,50 @@
+extend layout
+
+block page-scripts
+	script(src="/javascripts/sigma.min.js")
+	script(src="/javascripts/sigma.parseGexf.js")
+	
+	script
+		$(document).ready(function() {
+		var sigRoot = document.getElementById('sig');
+		var sigInst = sigma.init(sigRoot).drawingProperties({
+			defaultLabelColor: '#ccc',
+			font: 'Arial',
+			edgeColor: 'source',
+			defaultEdgeType: 'curve'
+		}).graphProperties({
+			minNodeSize: 1,
+			maxNodeSize: 10
+		});
+
+		sigInst.addNode('hello',{
+			label: 'Hello',
+			color: '#ff0000',
+			x: 1
+		}).addNode('world',{
+			label: 'World !',
+			color: '#00ff00',
+			x: 2
+		}).addEdge('hello_world','hello','world');
+		sigInst.parseGexf('/files/beer.gexf');
+		sigInst.draw();
+		});
+block content
+	style
+		.sigma {
+			margin-left:auto;
+			margin-right:auto;
+			position: relative;
+			border-radius: 4px;
+			-moz-border-radius: 4px;
+			-webkit-border-radius: 4px;
+			background: #222;
+			width: 80%;
+			height: 80%;
+			top: 0;
+			left: 0;
+		}
+	br
+	br
+	br
+	#sig.sigma(style="min-height: 1000px")
