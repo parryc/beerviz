@@ -2,6 +2,8 @@ extend layout
 
 block page-scripts
 	script(src="/javascripts/d3.beerviz.js")
+	script(src="/javascripts/d3.v3.min.js")
+	script(src="/javascripts/moment.min.js")
 	script
 		$(document).ready(function(){
 			$.get("/data/json/#{dataType}",
@@ -15,6 +17,7 @@ block page-scripts
 					"json"
 
 			);
+			linechart("/data/json/#{dataType}","#{dataType}");
 		});
 
 block content
