@@ -13,6 +13,11 @@ block page-scripts
 						console.log(reduceList(response,"rating"));
 						console.log(reduceList(response,"drinkMonth"));
 						console.log(reduceList(response,"drinkYear"));
+						var ag = aggregate(response,"brewery");
+						$.each(ag, function(i,v){
+							if(v.count > 6)
+								console.log(i + " " + (v.ratingTotal/v.count));
+							});
 					},
 					"json"
 

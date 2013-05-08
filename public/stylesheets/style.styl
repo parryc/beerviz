@@ -1,30 +1,36 @@
+@import 'typeplate'
+@import 'fonts'
+@import 'graphs'
+
+bold = font-family knewave, sans-serif
+
 html,body
-	margin 0
-	padding 0
 	font-family uglyqua, serif
 
 body
 	background hsl(28, 54%, 88%)
 	color hsl(351, 96%, 21%)
 
+h1,h2,h3,h4,h5,h6
+	font-family knewave
 
-h3
-	margin-top -20px
+.centered
+	text-align center
 
-.options
-	float right
+.cursive
+	font-family greatvibes, cursive
+
+.emph
+	font-style italic
 
 .recent
-	border-radius 10px
-	-moz-border-radius 10px
-	-webkit-border-radius 10px
-	border 3px solid black
 	padding 15px
-	width 300px
 
+#beer
+	font-size 6em
 
-#content
-	margin 0 auto
-	width 1024px
-
-
+#header
+	margin-top 15px
+	margin-bottom 15px
+	border-bottom 2px solid rgba(116, 81, 50, 0.1)
+	box-shadow 0 1px 2px rgba(255, 255, 255, 0.11)

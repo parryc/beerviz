@@ -156,3 +156,19 @@ function reduceList(data, reducer){
 
 	return reduced;
 }
+
+/*
+Finds the count and total ratings of topic
+*/
+function aggregate(data, field){
+	var aggregated = {};
+	data.forEach(function(d){
+		if(aggregated[d[field]]) {
+			aggregated[d[field]].count++;
+			aggregated[d[field]].ratingTotal += d.rating;
+		} else
+			aggregated[d[field]] = {count: 1, ratingTotal: d.rating};
+	});
+
+	return aggregated;
+}

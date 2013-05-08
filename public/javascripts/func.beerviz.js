@@ -34,6 +34,14 @@ function findProp(list, property, name){
 	});
 }
 
+/*
+parse a link to get the necessary json from the server
+*/
+
+function loadLikeABoss(link) {
+	return;
+}
+
 
 
 

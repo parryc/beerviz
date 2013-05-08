@@ -1,14 +1,21 @@
 extend layout
 
 block content
-	h1 Beers I Have Known and Loved
-	h3 A Tale of Data Visualization &amp; Debauchery
-	div
-	.options
-		| Look at all the options!
-	.recent
-		h2 Recent Beers
-		ol
-			each b in recent	
-				li #{b.brewery} #{b.name}: #{b.rating}
+	div.container#header
+		h1#beer Beer
+	
+	div.container
+		div.row-fluid
+			div.centered.span12 
+				h3 A Tale of Data Visualization &amp; Debauchery
+		div.row-fluid
+			.options.span6
+				| Look at all the options!
+			.recent.span6
+				h2 Recent Beers
+				ol
+					each b in recent	
+						li #{b.brewery} #{b.name}: #{b.rating}
+		div.row-fluid
+			a(href="/breweries").loader Load Breweries
 	

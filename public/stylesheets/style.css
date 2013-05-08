@@ -1,28 +1,304 @@
-html,
+@font-face {
+  font-family: Ampersand;
+  src: local('Georgia'), local('Garamond'), local('Palatino'), local('Book Antiqua');
+  unicode-range: U+0026;
+}
+@font-face {
+  font-family: Ampersand;
+  src: local('Georgia');
+  unicode-range: U+270C;
+}
+html {
+  font: normal 112.5%/1.65 serif;
+}
 body {
+  -webkit-hyphens: auto;
+  -moz-hyphens: auto;
+  -ms-hyphens: auto;
+  -o-hyphens: auto;
+  hyphens: auto;
+  word-wrap: break-word;
+  color: #444;
+}
+.tera {
+  font-size: 117px;
+  font-size: 6.5 rem;
+  margin-bottom: 0.25384615384615383 rem;
+}
+.giga {
+  font-size: 90px;
+  font-size: 5 rem;
+  margin-bottom: 0.33 rem;
+}
+.mega {
+  font-size: 72px;
+  font-size: 4 rem;
+  margin-bottom: 0.4125 rem;
+}
+.alpha,
+h1 {
+  font-size: 60px;
+  font-size: 3.3333333333333335 rem;
+  margin-bottom: 0.495 rem;
+}
+.beta,
+h2 {
+  font-size: 48px;
+  font-size: 2.6666666666666665 rem;
+  margin-bottom: 0.61875 rem;
+}
+.gamma,
+h3 {
+  font-size: 36px;
+  font-size: 2 rem;
+  margin-bottom: 0.825 rem;
+}
+.delta,
+h4 {
+  font-size: 24px;
+  font-size: 1.3333333333333333 rem;
+  margin-bottom: 1.2375 rem;
+}
+.epsilon,
+h5 {
+  font-size: 21px;
+  font-size: 1.1666666666666667 rem;
+  margin-bottom: 1.4142857142857141 rem;
+}
+.zeta,
+h6 {
+  font-size: 18px;
+  font-size: 1 rem;
+  margin-bottom: 1.65 rem;
+}
+h1 {
+  text-rendering: optimizeLegibility;
+  line-height: 1;
+  margin-top: 0;
+}
+h2 {
+  text-rendering: optimizeLegibility;
+  line-height: 1;
+  margin-top: 0;
+}
+h3 {
+  text-rendering: optimizeLegibility;
+  line-height: 1;
+  margin-top: 0;
+}
+h4 {
+  text-rendering: optimizeLegibility;
+  line-height: 1;
+  margin-top: 0;
+}
+h5 {
+  text-rendering: optimizeLegibility;
+  line-height: 1;
+  margin-top: 0;
+}
+h6 {
+  text-rendering: optimizeLegibility;
+  line-height: 1;
+  margin-top: 0;
+}
+p {
+  margin: 0 0 1.5em;
+}
+p + p {
+  text-indent: 1.5em;
+  margin-top: -1.5em;
+}
+abbr,
+acronym,
+blockquote,
+code,
+dir,
+kbd,
+listing,
+plaintext,
+q,
+samp,
+tt,
+var,
+xmp {
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  -o-hyphens: none;
+  hyphens: none;
+}
+pre code {
+  word-wrap: normal;
+  white-space: -moz-pre-wrap;
+  white-space: pre-wrap;
+}
+pre {
+  white-space: pre;
+}
+code {
+  white-space: pre;
+  font-family: monospace;
+}
+abbr {
+  font-variant: small-caps;
+  font-weight: 600;
+  text-transform: lowercase;
+  color: #808080;
+}
+abbr:hover {
+  cursor: help;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: #222;
+}
+.lining dt,
+.lining dd {
+  display: inline;
+  margin: 0;
+}
+.lining dt + dt:before,
+.lining dd + dt:before {
+  content: "\A";
+  white-space: pre;
+}
+.lining dd + dd:before {
+  content: ", ";
+}
+.lining dd:before {
+  content: ": ";
+  margin-left: -0.2rem;
+}
+.dictionary-style dt {
+  display: inline;
+  counter-reset: definitions;
+}
+.dictionary-style dt + dt:before {
+  content: ", ";
+  margin-left: -0.2rem;
+}
+.dictionary-style dd {
+  display: block;
+  counter-increment: definitions;
+}
+.dictionary-style dd:before {
+  content: counter(definitions, decimal) ". ";
+}
+.stats-tabs {
+  padding: 0;
+}
+.stats-tabs li {
+  display: inline-block;
+  margin: 0 0.625rem 0 0;
+  padding: 0 0.625rem 0 0;
+  border-right: 0.125rem solid #ccc;
+}
+.stats-tabs li:last-child {
   margin: 0;
   padding: 0;
+  border: none;
+}
+.stats-tabs li a {
+  display: inline-block;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+.stats-tabs li a b {
+  display: block;
+  margin: 0.125rem 0 0 0;
+  font-size: 0.875rem;
+  font-weight: normal;
+}
+.pull-quote {
+  position: relative;
+  padding: 1em;
+}
+.pull-quote:before,
+.pull-quote:after {
+  height: 1em;
+  opacity: 0.15;
+  position: absolute;
+  font-size: 4em;
+}
+.pull-quote:before {
+  content: '“';
+  top: 0;
+  left: 0;
+}
+.pull-quote:after {
+  content: '”';
+  bottom: 0;
+  right: 0;
+}
+@font-face {
+  font-family: uglyqua;
+  src: url("fonts/uglyqua-webfont.eot");
+  src: url("fonts/uglyqua-webfont.eot?#iefix") format('embedded-opentype'), url("fonts/uglyqua-webfont.woff") format('woff'), url("fonts/uglyqua-webfont.ttf") format('truetype'), url("fonts/uglyqua-webfont.svg#uglyqua") format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: knewave;
+  src: url("fonts/knewave-webfont.eot");
+  src: url("fonts/knewave-webfont.eot?#iefix") format('embedded-opentype'), url("fonts/knewave-webfont.woff") format('woff'), url("fonts/knewave-webfont.ttf") format('truetype'), url("fonts/knewave-webfont.svg#KnewaveRegular") format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: greatvibes;
+  src: url("greatvibes-regular-webfont.eot");
+  src: url("greatvibes-regular-webfont.eot?#iefix") format('embedded-opentype'), url("greatvibes-regular-webfont.woff") format('woff'), url("greatvibes-regular-webfont.ttf") format('truetype'), url("greatvibes-regular-webfont.svg#great_vibesregular") format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+.axis path,
+.axis line,
+path.line {
+  fill: none;
+  stroke: #000;
+}
+.axis path,
+.axis line {
+  shape-rendering: crispEdges;
+}
+html,
+body {
   font-family: uglyqua, serif;
 }
 body {
   background: #f1dfd0;
   color: #690212;
 }
-h3 {
-  margin-top: -20px;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: knewave;
 }
-.options {
-  float: right;
+.centered {
+  text-align: center;
+}
+.cursive {
+  font-family: greatvibes, cursive;
+}
+.emph {
+  font-style: italic;
 }
 .recent {
-  border-radius: 10px;
-  -moz-border-radius: 10px;
-  -webkit-border-radius: 10px;
-  border: 3px solid #000;
   padding: 15px;
-  width: 300px;
 }
-#content {
-  margin: 0 auto;
-  width: 1024px;
+#beer {
+  font-size: 6em;
+}
+#header {
+  margin-top: 15px;
+  margin-bottom: 15px;
+  border-bottom: 2px solid rgba(116,81,50,0.1);
+  box-shadow: 0 1px 2px rgba(255,255,255,0.11);
 }

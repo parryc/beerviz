@@ -1,0 +1,14 @@
+@font-face {
+  font-family: uglyqua;
+  src: url("fonts/uglyqua-webfont.eot");
+  src: url("fonts/uglyqua-webfont.eot?#iefix") format('embedded-opentype'), url("fonts/uglyqua-webfont.woff") format('woff'), url("fonts/uglyqua-webfont.ttf") format('truetype'), url("fonts/uglyqua-webfont.svg#uglyqua") format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: knewave;
+  src: url("fonts/knewave-webfont.eot");
+  src: url("fonts/knewave-webfont.eot?#iefix") format('embedded-opentype'), url("fonts/knewave-webfont.woff") format('woff'), url("fonts/knewave-webfont.ttf") format('truetype'), url("fonts/knewave-webfont.svg#KnewaveRegular") format('svg');
+  font-weight: normal;
+  font-style: normal;
+}

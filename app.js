@@ -63,11 +63,22 @@ Application, bitches!
 ********************/
 
 
+/********************
+Display
+********************/
 app.get('/', function(req, res) {
 	Beer.find({}).sort({_id:-1}).limit(5).exec(function(err,beers){
 		res.render('beer.jade', {recent: beers});
 	});
 });
+
+app.get('/breweries', function(req, res){
+
+});
+
+/*********************
+Future API helpers?
+*********************/
 
 app.get('/data/:type/:sort?',function(req, res){
 	var sort = {};
