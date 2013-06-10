@@ -2,40 +2,34 @@
 App = Ember.Application.create({});
 $(document).ready(function(){
   $('body').append("Loading...");
+  colorscale.set([
+    {value: 0, color: "rgb(255,0,0)"},
+    {value: 10, color: "rgb(0,255,0"}
+  ]);
 });
 // Our RedditLink model
 App.Beer = Ember.Object.extend({
-
-  /*
-    It seems reddit will return the string 'default' when there's no thumbnail present.
-    This computed property will convert 'default' to null to avoid rendering a broken
-    image link.
-  */
-  thumbnailUrl: function() {
-    var thumbnail = this.get('thumbnail');
-    return (thumbnail === 'default') ? null : thumbnail;
-  }.property('thumbnail')
+  color: function() {
+    var rating = this.get('rating');
+    return "color: "+colorscale.pick(+rating);
+  }.property('rating')
 
 });
 
 App.Beer.reopenClass({
-
-  /* Use the Reddit JSON API to retrieve a list of links within a subreddit. Returns
-     a promise that will resolve to an array of `App.Beer` objects */
   findAll: function() {
     return $.getJSON('beer-5-13.json').then(function(response) {
-      var links = [];
+      var beers = [];
       response.forEach(function(beer,index) {
-        links.push(App.Beer.create(beer));
+        beers.push(App.Beer.create(beer));
       });
-      // console.log(links);
-      return links;
+      // console.log(beers);
+      return beers;
     });
   }
 
 });
 
-// Our default route. Just show a list of the links in /r/aww
 App.IndexRoute = Ember.Route.extend({
   model: function() {
     return App.Beer.findAll();
@@ -47,8 +41,14 @@ App.IndexRoute = Ember.Route.extend({
 */
 App.Search = Em.TextField.extend({
     valueBinding: 'App.SearchValue.value',
-    insertNewline: function() {
-        alert('Submitted: ' + App.SearchValue.get('value'));
+    keyUp: function() {
+      var search = App.SearchValue.get('value');
+      $('.name').each(function(){
+        if($(this).text() !== search)
+          $(this).parent().hide();
+        else
+          $(this).parent().show();
+      });
     }
 });
 

@@ -2,8 +2,7 @@
 <html>
 <head>
 <meta charset=utf-8 />
-<title>Ember Reddit Example</title>
-  <link rel="stylesheet" href="css/normalize.css">
+<title>Beers I Have Known and Loved</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -20,9 +19,9 @@
     </div>
     <h2>Links from /r/aww</h2>
     <ul>
-    {{#each link in content}}
+    {{#each beer in content}}
         <li>
-          <a {{bindAttr href="link.name"}} target="_blank">{{link.name}} <span class="rating">{{link.rating}}</span></a>
+          <a class="name"{{bindAttr href="beer.name"}} target="_blank">{{beer.name}}</a> <span class="rating" {{bindAttr style="beer.color"}}>{{beer.rating}}</span>
         </li>
     {{/each}}
     </ul>
@@ -31,7 +30,8 @@
   <script src="js/libs/jquery.js"></script>
   <script src="js/libs/handlebars.js"></script>
   <script src="js/libs/ember.js"></script>
+  <script src="js/libs/tinycolor.js"></script>
+  <script src="js/libs/colorscale.js"></script>
   <script src="js/app.js"></script>
-
 </body>
 </html>
