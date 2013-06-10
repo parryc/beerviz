@@ -14,17 +14,25 @@
     </div>
     <div class="search">
       {{view App.Search}}
-      {{view App.SubmitButton}}
-      {{App.SearchValue.value}}
+      <span style="display: none">{{App.SearchValue.value}}</span>
     </div>
     <h2>Links from /r/aww</h2>
-    <ul>
+    <table>
+      <thead>
+        <th>Brewery</th>
+        <th>Brew</th>
+        <th>Rating</th>
+      </thead>
+      <tbody>
     {{#each beer in content}}
-        <li>
-          <a class="name"{{bindAttr href="beer.name"}} target="_blank">{{beer.name}}</a> <span class="rating" {{bindAttr style="beer.color"}}>{{beer.rating}}</span>
-        </li>
+        <tr {{bindAttr data-search="beer.search"}}>
+          <td class="brewery">{{beer.brewery}}</td> 
+          <td class="name">{{beer.name}}</td> 
+          <td class="rating" {{bindAttr style="beer.color"}}>{{beer.rating}}</td>
+        </tr>
     {{/each}}
-    </ul>
+      </tbody>
+    </table>
   </script>
 
   <script src="js/libs/jquery.js"></script>
