@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset=utf-8 />
+<title>Ember Reddit Example</title>
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <script type="text/x-handlebars" data-template-name="index">
+    <div class='about'>
+      This was created for a <a href="http://eviltrout.com/2013/03/23/ember-without-data.html">tutorial on Ember.js</a>.
+      The source code is on <a href='https://github.com/eviltrout/emberreddit'>Github</a>.
+    </div>
+    <div class="search">
+      {{view App.Search}}
+      {{view App.SubmitButton}}
+      {{App.SearchValue.value}}
+    </div>
+    <h2>Links from /r/aww</h2>
+    <ul>
+    {{#each link in content}}
+        <li>
+          <a {{bindAttr href="link.name"}} target="_blank">{{link.name}} <span class="rating">{{link.rating}}</span></a>
+        </li>
+    {{/each}}
+    </ul>
+  </script>
+
+  <script src="js/libs/jquery.js"></script>
+  <script src="js/libs/handlebars.js"></script>
+  <script src="js/libs/ember.js"></script>
+  <script src="js/app.js"></script>
+
+</body>
+</html>

@@ -16,8 +16,20 @@ block page-scripts
 						var ag = aggregate(response,"brewery");
 						$.each(ag, function(i,v){
 							if(v.count > 6)
-								console.log(i + " " + (v.ratingTotal/v.count));
-							});
+								console.log(i + " " + (v.ratingTotal/v.count) + " " + v.count);
+						});
+						var ag2 = aggregate(response,"style"),
+							note = "";
+						$.each(ag2, function(i,v){
+							if(v.ratingTotal/v.count < 6.5)
+								note = " bad"
+							if(v.ratingTotal/v.count >= 6.5 && v.ratingTotal/v.count < 7)
+								note = " ok"
+							if(v.ratingTotal/v.count >= 7.0)
+								note = " good"
+							console.log(i + " " + (v.ratingTotal/v.count) + " " + v.count + note);
+						});
+						//- console.log(ag2);
 					},
 					"json"
 
