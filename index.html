@@ -17,10 +17,10 @@
     </div>
     <div class="row-fluid" id="stats">
       <ul class="stats-tabs">
-        <li><a>Breweries<b>{{breweriesCount}}</b></a></li>
-        <li><a>Brews<b>{{brewsCount}}</b></a></li>
-        <li><a>Styles<b>{{stylesCount}}</b></a></li>
-        <li><a>Average Rating<b>{{averageRating}}</b></a></li>
+        <li><a>Breweries<b id="total-breweries">{{breweriesCount}}</b></a></li>
+        <li><a>Brews<b id="total-brews">{{brewsCount}}</b></a></li>
+        <li><a>Styles<b id="total-styles">{{stylesCount}}</b></a></li>
+        <li><a>Average Rating<b id="average">{{averageRating}}</b></a></li>
       </ul>
     </div>
     <div class="row-fluid">
@@ -28,7 +28,7 @@
         {{view App.Search}}
         <span style="display: none">{{App.SearchValue.value}}</span>
       </div>
-      <table>
+      <table class="tablesorter">
         <thead>
           <th>Brewery</th>
           <th>Brew</th>
@@ -55,6 +55,7 @@
   <script src="js/libs/ember.js"></script>
   <script src="js/libs/tinycolor.js"></script>
   <script src="js/libs/colorscale.js"></script>
+  <script src="js/libs/jquery.tablesorter.min.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>

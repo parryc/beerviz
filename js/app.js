@@ -1,28 +1,14 @@
 // Create our Application
 App = Ember.Application.create({});
+
 $(document).ready(function(){
   colorscale.set([
     {value: 0, color: "rgb(0,0,0)"},
-    {value: 3, color: "rgb(255,0,0)"},
-    {value: 6, color: "rgb(0,0,255)"},
+    {value: 5.5, color: "rgb(255,0,0)"},
+    {value: 6.5, color: "rgb(0,0,255)"},
     {value: 10, color: "rgb(0,255,0)"}
   ]);
-});
-
-
-App.Beer = Ember.Object.extend({
-  color: function() {
-    var rating = this.get('rating');
-    return "color: "+colorscale.pick(+rating);
-  }.property('rating'),
-  search: function() {
-    var brewery = this.get('brewery'),
-        name = this.get('name'),
-        rating = this.get('rating'),
-        style = this.get('style');
-    return (brewery+" "+name+" "+style+" "+rating).toLowerCase();
-  }.property('brewery','name','style','rating')
-
+  $('.tablesorter').tablesorter();
 });
 
 App.IndexController = Ember.ArrayController.extend({
@@ -49,6 +35,33 @@ App.IndexController = Ember.ArrayController.extend({
   }.property('model')
 });
 
+App.IndexRoute = Ember.Route.extend({
+  model: function() {
+    return App.Beer.findAll();
+  }
+});
+
+App.IndexView = Ember.View.extend({
+  didInsertElement: function() {
+    $('.tablesorter').tablesorter();
+  }
+});
+
+App.Beer = Ember.Object.extend({
+  color: function() {
+    var rating = this.get('rating');
+    return "color: "+colorscale.pick(+rating);
+  }.property('rating'),
+  search: function() {
+    var brewery = this.get('brewery'),
+        name = this.get('name'),
+        rating = this.get('rating'),
+        style = this.get('style');
+    return (brewery+" "+name+" "+style+" "+rating).toLowerCase();
+  }.property('brewery','name','style','rating')
+
+});
+
 App.Beer.reopenClass({
   findAll: function() {
     return $.getJSON('beer-5-13.json').then(function(response) {
@@ -63,12 +76,6 @@ App.Beer.reopenClass({
 
 });
 
-App.IndexRoute = Ember.Route.extend({
-  model: function() {
-    return App.Beer.findAll();
-  }
-});
-
 /*
   Text filter
 */
@@ -79,12 +86,39 @@ App.Search = Em.TextField.extend({
     keyUp: function() {
       var search = App.SearchValue.get('value').toLowerCase();
       delay(function(){
+        var totalRating = 0,
+            totalBrews = [],
+            tempBrew = "",
+            totalBreweries = [],
+            tempBrewery = "",
+            totalStyles = [],
+            tempStyle = "",
+            count = 0;
+
         $('tbody tr').each(function(){
           if($(this).data('search').indexOf(search) === -1)
             $(this).hide();
-          else
+          else {
             $(this).show();
+            tempBrew = $(this).find('.name').text();
+            tempBrewery = $(this).find('.brewery').text();
+            tempStyle = $(this).find('.style').text();
+
+            if($.inArray(tempBrew,totalBrews) === -1)
+              totalBrews.push(tempBrew);
+            if($.inArray(tempBrewery,totalBreweries) === -1)
+              totalBreweries.push(tempBrewery);
+            if($.inArray(tempStyle,totalStyles) === -1)
+              totalStyles.push(tempStyle);
+
+            totalRating += +$(this).find('.rating').text();
+            count++;
+          }
         });
+        $('#average').text((totalRating/count).toFixed(2));
+        $('#total-breweries').text(totalBreweries.length);
+        $('#total-brews').text(totalBrews.length);
+        $('#total-styles').text(totalStyles.length);
       },200);
     }
 });
