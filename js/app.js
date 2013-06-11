@@ -64,7 +64,7 @@ App.Beer = Ember.Object.extend({
 
 App.Beer.reopenClass({
   findAll: function() {
-    return $.getJSON('beer-5-13.json').then(function(response) {
+    return $.getJSON('beer.json').then(function(response) {
       var beers = [];
       response.forEach(function(beer,index) {
         beers.push(App.Beer.create(beer));
