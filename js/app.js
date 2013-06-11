@@ -117,7 +117,10 @@ App.Search = Em.TextField.extend({
         });
         $('#average').text((totalRating/count).toFixed(2));
         $('#total-breweries').text(totalBreweries.length);
-        $('#total-brews').text(totalBrews.length);
+        if(search)
+          $('#total-brews').text(totalBrews.length);
+        else
+          $('#total-brews').text($('tbody tr').length);
         $('#total-styles').text(totalStyles.length);
       },200);
     }
