@@ -3,37 +3,52 @@
 <head>
 <meta charset=utf-8 />
 <title>Beers I Have Known and Loved</title>
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" type="text/css" href="css/typeplate.css">
+  <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+  <link rel="stylesheet" type="text/css" href="css/style.css">
+  <link rel="stylesheet" type="text/css" href="css/fonts/fonts.css">
 </head>
 <body>
-
-  <script type="text/x-handlebars" data-template-name="index">
-    <div class='about'>
-      This was created for a <a href="http://eviltrout.com/2013/03/23/ember-without-data.html">tutorial on Ember.js</a>.
-      The source code is on <a href='https://github.com/eviltrout/emberreddit'>Github</a>.
+<script type="text/x-handlebars" data-template-name="index">
+  <div id="container">
+    <div class="row-fluid">
+      <img src="logo.png" style="float: left;"/>
+      <h1 id="header">Beers I Have Known and Loved</h1>
     </div>
-    <div class="search">
-      {{view App.Search}}
-      <span style="display: none">{{App.SearchValue.value}}</span>
+    <div class="row-fluid" id="stats">
+      <ul class="stats-tabs">
+        <li><a>Breweries<b>{{breweriesCount}}</b></a></li>
+        <li><a>Brews<b>{{brewsCount}}</b></a></li>
+        <li><a>Styles<b>{{stylesCount}}</b></a></li>
+        <li><a>Average Rating<b>{{averageRating}}</b></a></li>
+      </ul>
     </div>
-    <h2>Links from /r/aww</h2>
-    <table>
-      <thead>
-        <th>Brewery</th>
-        <th>Brew</th>
-        <th>Rating</th>
-      </thead>
-      <tbody>
-    {{#each beer in content}}
-        <tr {{bindAttr data-search="beer.search"}}>
-          <td class="brewery">{{beer.brewery}}</td> 
-          <td class="name">{{beer.name}}</td> 
-          <td class="rating" {{bindAttr style="beer.color"}}>{{beer.rating}}</td>
-        </tr>
-    {{/each}}
-      </tbody>
-    </table>
-  </script>
+    <div class="row-fluid">
+      <div class="search">
+        {{view App.Search}}
+        <span style="display: none">{{App.SearchValue.value}}</span>
+      </div>
+      <table>
+        <thead>
+          <th>Brewery</th>
+          <th>Brew</th>
+          <th>Style</th>
+          <th>Rating</th>
+        </thead>
+        <tbody>
+      {{#each beer in content}}
+          <tr {{bindAttr data-search="beer.search"}}>
+            <td class="brewery">{{beer.brewery}}</td> 
+            <td class="name">{{beer.name}}</td> 
+            <td class="style">{{beer.style}}</td> 
+            <td class="rating" {{bindAttr style="beer.color"}}>{{beer.rating}}</td>
+          </tr>
+      {{/each}}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</script>
 
   <script src="js/libs/jquery.js"></script>
   <script src="js/libs/handlebars.js"></script>

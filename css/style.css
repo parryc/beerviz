@@ -1,0 +1,75 @@
+p a, footer a {
+	color: rgb(111,176,235);
+}
+
+body,aside {
+	padding: 10px;
+}
+
+table {
+	width: 100%;
+}
+
+
+#header {
+	margin-top: 70px;
+	margin-left: 25%;
+}
+
+#container {
+	width: 70%;
+	margin: 0 auto;
+}
+
+#stats {
+	text-align: center;
+}
+
+#stats b {
+	margin-top: 5px;
+}
+
+.search {
+	text-align: center;
+}
+
+
+@media(min-width: 500px){
+	.date-small {
+		display: none;
+	}
+}
+
+@media(min-width: 640px){
+	.title-small {
+		display: none;
+	}
+}
+
+@media(max-width: 980px){
+	.post-title {
+		font-size: 2em;
+		bottom: 8px;
+		width: 175px;
+	}
+	.category-post {
+		font-size: 2em;
+	}
+	.post {
+		padding-bottom: 50px;
+		margin-bottom: 0;
+	}
+}
+
+@media(max-width: 640px){
+	.title-large {
+		display: none;
+	}
+}
+
+@media(max-width: 500px){
+	.date {
+		display: none;
+	}
+}
+

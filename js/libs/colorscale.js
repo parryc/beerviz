@@ -23,8 +23,6 @@
 				this.data = data;
 			},
 			interp: function(c1,c2,per){
-				console.log(c1);
-				console.log(c2);
 				var r = c1.r + (per*(c2.r-c1.r)),
 					g = c1.g + (per*(c2.g-c1.g)),
 					b = c1.b + (per*(c2.b-c1.b)),
