@@ -10,7 +10,9 @@ table {
 	width: 100%;
 }
 
-
+th {
+	min-width: 100px;
+}
 #header {
 	margin-top: 70px;
 	margin-left: 25%;
@@ -27,6 +29,14 @@ table {
 
 #stats b {
 	margin-top: 5px;
+}
+
+.date {
+	text-align: center;
+}
+
+.rating {
+	text-align: center;
 }
 
 .search {
