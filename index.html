@@ -20,6 +20,7 @@
         <li><a>Breweries<b id="total-breweries">{{breweriesCount}}</b></a></li>
         <li><a>Brews<b id="total-brews">{{brewsCount}}</b></a></li>
         <li><a>Styles<b id="total-styles">{{stylesCount}}</b></a></li>
+        <li><a>Countries<b id="total-countries">{{countriesCount}}</b></a></li>
         <li><a>Average Rating<b id="average">{{averageRating}}</b></a></li>
       </ul>
     </div>
@@ -30,18 +31,22 @@
       </div>
       <table class="tablesorter">
         <thead>
-          <th>Brewery</th>
-          <th>Brew</th>
-          <th>Style</th>
-          <th>Rating</th>
+          <th>★</th>
+          <th>I Tried</th>
+          <th>Which Is A</th>
+          <th>From The</th>
+          <th>And It Drank In</th>
+          <th>During</th>
         </thead>
         <tbody>
       {{#each beer in content}}
           <tr {{bindAttr data-search="beer.search"}}>
-            <td class="brewery">{{beer.brewery}}</td> 
-            <td class="name">{{beer.name}}</td> 
-            <td class="style">{{beer.style}}</td> 
             <td class="rating" {{bindAttr style="beer.color"}}>{{beer.rating}}</td>
+            <td class="brewery">{{beer.brewery}} {{beer.name}}</td> 
+            <td class="style">{{beer.style}}</td> 
+            <td class="from">{{beer.country}}</td>
+            <td class="location">{{beer.drinkLocationCity}}, {{beer.drinkLocationCountry}}</td>
+            <td class="date">{{beer.date}}</td>
           </tr>
       {{/each}}
         </tbody>

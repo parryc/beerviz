@@ -8,7 +8,6 @@ $(document).ready(function(){
     {value: 6.5, color: "rgb(0,0,255)"},
     {value: 10, color: "rgb(0,255,0)"}
   ]);
-  $('.tablesorter').tablesorter();
 });
 
 App.IndexController = Ember.ArrayController.extend({
@@ -29,6 +28,10 @@ App.IndexController = Ember.ArrayController.extend({
     var beers = this.get('model');
     return beers.length;
   }.property('model'),
+  countriesCount: function () {
+    var beers = this.get('model');
+    return getUniqueByParam('country',beers).length;
+  }.property('model'),
   stylesCount: function () {
     var beers = this.get('model');
     return getUniqueByParam('style',beers).length;
@@ -43,7 +46,9 @@ App.IndexRoute = Ember.Route.extend({
 
 App.IndexView = Ember.View.extend({
   didInsertElement: function() {
-    $('.tablesorter').tablesorter();
+    $('.tablesorter').tablesorter({
+      sortList: [[0,1]]
+    });
   }
 });
 
@@ -52,13 +57,25 @@ App.Beer = Ember.Object.extend({
     var rating = this.get('rating');
     return "color: "+colorscale.pick(+rating);
   }.property('rating'),
+  date: function() {
+    var month = +this.get('drinkMonth'),
+        year = +this.get('drinkYear');
+
+    return year+"-"+month;
+  }.property('drinkMonth','drinkYear'),
+  month: function() {
+    return +this.get('drinkMonth');
+  }.property('drinkMonth'),
   search: function() {
     var brewery = this.get('brewery'),
         name = this.get('name'),
         rating = this.get('rating'),
         style = this.get('style');
     return (brewery+" "+name+" "+style+" "+rating).toLowerCase();
-  }.property('brewery','name','style','rating')
+  }.property('brewery','name','style','rating'),
+  year: function() {
+    return +this.get('drinkYear');
+  }.property('drinkYear')
 
 });
 
@@ -69,7 +86,7 @@ App.Beer.reopenClass({
       response.forEach(function(beer,index) {
         beers.push(App.Beer.create(beer));
       });
-      // console.log(beers);
+      //console.log(beers);
       return beers;
     });
   }
