@@ -34,7 +34,7 @@
           <th>★</th>
           <th>I Tried</th>
           <th>Which Is A</th>
-          <th>From The</th>
+          <th>From</th>
           <th>And It Drank In</th>
           <th>During</th>
         </thead>
@@ -42,9 +42,9 @@
       {{#each beer in content}}
           <tr {{bindAttr data-search="beer.search"}}>
             <td class="rating" {{bindAttr style="beer.color"}}>{{beer.rating}}</td>
-            <td class="brewery">{{beer.brewery}} {{beer.name}}</td> 
+            <td><span class="brewery">{{beer.brewery}}</span> <span class="name">{{beer.name}}</span></td> 
             <td class="style">{{beer.style}}</td> 
-            <td class="from">{{beer.country}}</td>
+            <td class="country">{{beer.country}}</td>
             <td class="location">{{beer.drinkLocationCity}}, {{beer.drinkLocationCountry}}</td>
             <td class="date">{{beer.date}}</td>
           </tr>

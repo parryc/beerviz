@@ -70,9 +70,10 @@ App.Beer = Ember.Object.extend({
     var brewery = this.get('brewery'),
         name = this.get('name'),
         rating = this.get('rating'),
-        style = this.get('style');
-    return (brewery+" "+name+" "+style+" "+rating).toLowerCase();
-  }.property('brewery','name','style','rating'),
+        style = this.get('style'),
+        country = this.get('country');
+    return (brewery+" "+name+" "+style+" "+rating+" "+country).toLowerCase();
+  }.property('brewery','name','style','rating','country'),
   year: function() {
     return +this.get('drinkYear');
   }.property('drinkYear')
@@ -108,10 +109,15 @@ App.Search = Em.TextField.extend({
             tempBrew = "",
             totalBreweries = [],
             tempBrewery = "",
+            totalCountries = [],
+            tempCountry = "",
             totalStyles = [],
             tempStyle = "",
             count = 0;
 
+        // rows.show().filter(function() {
+        //   return !~$(this).data('search').indexOf(search);
+        // }).hide();
         $('tbody tr').each(function(){
           if($(this).data('search').indexOf(search) === -1)
             $(this).hide();
@@ -120,11 +126,14 @@ App.Search = Em.TextField.extend({
             tempBrew = $(this).find('.name').text();
             tempBrewery = $(this).find('.brewery').text();
             tempStyle = $(this).find('.style').text();
+            tempCountry = $(this).find('.country').text();
 
             if($.inArray(tempBrew,totalBrews) === -1)
               totalBrews.push(tempBrew);
             if($.inArray(tempBrewery,totalBreweries) === -1)
               totalBreweries.push(tempBrewery);
+            if($.inArray(tempCountry,totalCountries) === -1)
+              totalCountries.push(tempCountry);
             if($.inArray(tempStyle,totalStyles) === -1)
               totalStyles.push(tempStyle);
 
@@ -132,14 +141,16 @@ App.Search = Em.TextField.extend({
             count++;
           }
         });
+        console.log(totalBrews);
         $('#average').text((totalRating/count).toFixed(2));
         $('#total-breweries').text(totalBreweries.length);
         if(search)
           $('#total-brews').text(totalBrews.length);
         else
           $('#total-brews').text($('tbody tr').length);
+        $('#total-countries').text(totalCountries.length);
         $('#total-styles').text(totalStyles.length);
-      },200);
+      },100);
     }
 });
 
