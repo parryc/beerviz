@@ -1,162 +1,24 @@
-// Create our Application
-App = Ember.Application.create({});
+function BeerCtrl($scope, $http, $timeout) {
+  var data = null, timeout = null, tempQuery;
 
-$(document).ready(function(){
-  colorscale.set([
-    {value: 0, color: "rgb(0,0,0)"},
-    {value: 5.5, color: "rgb(255,0,0)"},
-    {value: 6.5, color: "rgb(0,0,255)"},
-    {value: 10, color: "rgb(0,255,0)"}
-  ]);
-});
+  $scope.query = '';
 
-App.IndexController = Ember.ArrayController.extend({
-  averageRating: function () {
-    var beers = this.get('model'),
-        total = 0;
-    $.each(beers,function(){
-      beer = $(this)[0];
-      total += +beer.rating;
-    });
-    return (total/beers.length).toFixed(2);
-  }.property('model'),
-  breweriesCount: function () {
-    var beers = this.get('model');
-    return getUniqueByParam('brewery',beers).length;
-  }.property('model'),
-  brewsCount: function () {
-    var beers = this.get('model');
-    return beers.length;
-  }.property('model'),
-  countriesCount: function () {
-    var beers = this.get('model');
-    return getUniqueByParam('country',beers).length;
-  }.property('model'),
-  stylesCount: function () {
-    var beers = this.get('model');
-    return getUniqueByParam('style',beers).length;
-  }.property('model')
-});
+  $.get('beer.json', function(response){
+    data = response;
+  },"json").promise().done(function(data){
+    $scope.beers = data;
+  });
 
-App.IndexRoute = Ember.Route.extend({
-  model: function() {
-    return App.Beer.findAll();
-  }
-});
+  $scope.$watch('search', function (val) {
+      if (timeout) $timeout.cancel(timeout);
 
-App.IndexView = Ember.View.extend({
-  didInsertElement: function() {
-    $('.tablesorter').tablesorter({
-      sortList: [[0,1]]
-    });
-  }
-});
+      tempQuery = val;
+      timeout = $timeout(function() {
+          $scope.query = tempQuery;
+      }, 200);
+  })
 
-App.Beer = Ember.Object.extend({
-  color: function() {
-    var rating = this.get('rating');
-    return "color: "+colorscale.pick(+rating);
-  }.property('rating'),
-  date: function() {
-    var month = +this.get('drinkMonth'),
-        year = +this.get('drinkYear');
-
-    return year+"-"+month;
-  }.property('drinkMonth','drinkYear'),
-  month: function() {
-    return +this.get('drinkMonth');
-  }.property('drinkMonth'),
-  search: function() {
-    var brewery = this.get('brewery'),
-        name = this.get('name'),
-        rating = this.get('rating'),
-        style = this.get('style'),
-        country = this.get('country');
-    return (brewery+" "+name+" "+style+" "+rating+" "+country).toLowerCase();
-  }.property('brewery','name','style','rating','country'),
-  year: function() {
-    return +this.get('drinkYear');
-  }.property('drinkYear')
-
-});
-
-App.Beer.reopenClass({
-  findAll: function() {
-    return $.getJSON('beer.json').then(function(response) {
-      var beers = [];
-      response.forEach(function(beer,index) {
-        beers.push(App.Beer.create(beer));
-      });
-      //console.log(beers);
-      return beers;
-    });
-  }
-
-});
-
-/*
-  Text filter
-*/
-
-App.Search = Em.TextField.extend({
-    valueBinding: 'App.SearchValue.value',
-    placeholder: 'Search',
-    keyUp: function() {
-      var search = App.SearchValue.get('value').toLowerCase();
-      delay(function(){
-        var totalRating = 0,
-            totalBrews = [],
-            tempBrew = "",
-            totalBreweries = [],
-            tempBrewery = "",
-            totalCountries = [],
-            tempCountry = "",
-            totalStyles = [],
-            tempStyle = "",
-            count = 0;
-
-        // rows.show().filter(function() {
-        //   return !~$(this).data('search').indexOf(search);
-        // }).hide();
-        $('tbody tr').each(function(){
-          if($(this).data('search').indexOf(search) === -1)
-            $(this).hide();
-          else {
-            $(this).show();
-            tempBrew = $(this).find('.name').text();
-            tempBrewery = $(this).find('.brewery').text();
-            tempStyle = $(this).find('.style').text();
-            tempCountry = $(this).find('.country').text();
-
-            if($.inArray(tempBrew,totalBrews) === -1)
-              totalBrews.push(tempBrew);
-            if($.inArray(tempBrewery,totalBreweries) === -1)
-              totalBreweries.push(tempBrewery);
-            if($.inArray(tempCountry,totalCountries) === -1)
-              totalCountries.push(tempCountry);
-            if($.inArray(tempStyle,totalStyles) === -1)
-              totalStyles.push(tempStyle);
-
-            totalRating += +$(this).find('.rating').text();
-            count++;
-          }
-        });
-        console.log(totalBrews);
-        $('#average').text((totalRating/count).toFixed(2));
-        $('#total-breweries').text(totalBreweries.length);
-        if(search)
-          $('#total-brews').text(totalBrews.length);
-        else
-          $('#total-brews').text($('tbody tr').length);
-        $('#total-countries').text(totalCountries.length);
-        $('#total-styles').text(totalStyles.length);
-      },100);
-    }
-});
-
-App.SearchValue = Em.Object.create({
-    value: ''
-});
+}
 
 
 /**********
