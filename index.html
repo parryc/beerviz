@@ -41,7 +41,7 @@
           <th>During</th>
         </thead>
         <tbody>
-          <tr ng-animate="animate" ng-repeat="beer in beers | filter:query">
+          <tr ng-animate="'custom'" ng-repeat="beer in beers | filter:query">
             <td class="rating" style="{{beer.color}}">{{beer.rating}}</td>
             <td><span class="brewery">{{beer.brewery}}</span> <span class="name">{{beer.name}}</span></td> 
             <td class="style">{{beer.style}}</td> 
