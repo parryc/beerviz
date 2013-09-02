@@ -8,8 +8,6 @@
   <link rel="stylesheet" type="text/css" href="css/style.css">
   <link rel="stylesheet" type="text/css" href="css/fonts/fonts.css">
   <script src="js/libs/jquery.js"></script>
-  <script src="js/libs/handlebars.js"></script>
-  <script src="js/libs/ember.js"></script>
   <script src="js/libs/tinycolor.js"></script>
   <script src="js/libs/colorscale.js"></script>
   <script src="js/libs/jquery.tablesorter.min.js"></script>
@@ -41,13 +39,13 @@
           <th>During</th>
         </thead>
         <tbody>
-          <tr ng-animate="'custom'" ng-repeat="beer in beers | filter:query">
-            <td class="rating" style="{{beer.color}}">{{beer.rating}}</td>
+          <tr ng-repeat="beer in beers | filter:query">
+            <td class="rating" style="color: {{beer.color}}">{{beer.rating}}</td>
             <td><span class="brewery">{{beer.brewery}}</span> <span class="name">{{beer.name}}</span></td> 
             <td class="style">{{beer.style}}</td> 
             <td class="country">{{beer.country}}</td>
             <td class="location">{{beer.drinkLocationCity}}, {{beer.drinkLocationCountry}}</td>
-            <td class="date">{{beer.drinkYear}}, {{beer.drinkMonth}}</td>
+            <td class="date">{{beer.date}}</td>
           </tr>
         </tbody>
       </table>

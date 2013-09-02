@@ -1,3 +1,16 @@
+/**
+Page load
+**/
+
+$(document).ready(function(){
+  colorscale.create([
+        {'value':0,'color':{'r':238,'g':131,'b':103}},
+        {'value':10,'color':{'r':130,'g':184,'b':64}}
+        ], "beer");
+
+  $('.tablesorter').tablesorter({sortList: [[0,0]]});
+});
+
 function BeerCtrl($scope, $http, $timeout) {
   var data = null, timeout = null, tempQuery;
 
@@ -6,6 +19,11 @@ function BeerCtrl($scope, $http, $timeout) {
   $.get('beer.json', function(response){
     data = response;
   },"json").promise().done(function(data){
+    for (var i = data.length - 1; i >= 0; i--) {
+      data[i].color = colorscale.beer.pick(data[i].rating);
+      data[i].date = parseInt(data[i].drinkMonth,10)+", "+data[i].drinkYear;
+    }
+
     $scope.beers = data;
   });
 
@@ -16,7 +34,7 @@ function BeerCtrl($scope, $http, $timeout) {
       timeout = $timeout(function() {
           $scope.query = tempQuery;
       }, 200);
-  })
+  });
 
 }
 
