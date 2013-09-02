@@ -4,11 +4,12 @@ Page load
 
 $(document).ready(function(){
   colorscale.create([
-        {'value':0,'color':{'r':238,'g':131,'b':103}},
-        {'value':10,'color':{'r':130,'g':184,'b':64}}
+        {'value':0, 'color':{'r':50,'g':50,'b':50}},
+        {'value':3.5,'color':{'r':238,'g':131,'b':103}},
+        {'value':10,'color':{'r':130,'g':255,'b':64}}
         ], "beer");
 
-  $('.tablesorter').tablesorter({sortList: [[0,0]]});
+  // $('.tablesorter').tablesorter({sortList: [[0,0]]});
 });
 
 function BeerCtrl($scope, $http, $timeout) {
@@ -21,7 +22,8 @@ function BeerCtrl($scope, $http, $timeout) {
   },"json").promise().done(function(data){
     for (var i = data.length - 1; i >= 0; i--) {
       data[i].color = colorscale.beer.pick(data[i].rating);
-      data[i].date = parseInt(data[i].drinkMonth,10)+", "+data[i].drinkYear;
+      data[i].date = new Date(parseInt(data[i].drinkMonth,10)+"/"+"01/"+data[i].drinkYear);
+      data[i].dateSmall = parseInt(data[i].drinkMonth,10)+"/"+data[i].drinkYear;
     }
 
     $scope.beers = data;

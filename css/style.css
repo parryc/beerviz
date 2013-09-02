@@ -13,10 +13,6 @@ table {
 th {
 	min-width: 100px;
 }
-#header {
-	margin-top: 70px;
-	margin-left: 25%;
-}
 
 #container {
 	width: 70%;
@@ -31,12 +27,37 @@ th {
 	margin-top: 5px;
 }
 
-.date {
+.centered {
+	float: none;
+	margin-left: auto;
+	margin-right: auto;
 	text-align: center;
+}
+
+.country {
+	width: 32px;
+	margin-top: -4px;
+}
+
+.date,.date-small {
+	width: 75px;
+	margin-right: 5px;
+	display: inline-block;
+}
+
+.date-small {
+	width: 55px;
 }
 
 .rating {
 	text-align: center;
+	width: 50px;
+	margin-right: 5px;
+	display: inline-block;
+}
+
+.style {
+	font-style: italic;
 }
 
 .search {
@@ -44,10 +65,38 @@ th {
 }
 
 
-@media(min-width: 500px){
-	.date-small {
+@media(max-width: 500px){
+	#container {
+		width: 95%;
+	}
+	#header {
+		font-size: 1.5em;
+	}
+	.beer:nth-child(even) {
+		padding-bottom: 15px;
+		padding-top: 15px;
+		margin-bottom: 15px;
+		margin-top: 15px;
+		background-color: #d5e8f9;
+		padding-left: 10%;
+		margin-left: -10%;
+		padding-right: 10%;
+	}
+	.brewery,.name {
+		font-weight: bold;
+	}
+	.date {
 		display: none;
 	}
+	.rating {
+		border: 1px solid black;
+	}
+}
+
+@media(min-width: 500px){
+	hr,.date-small {
+		display: none;
+	} 
 }
 
 @media(min-width: 640px){
