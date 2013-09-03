@@ -19,6 +19,10 @@ th {
 	margin: 0 auto;
 }
 
+#sorters span, #sorters img {
+	cursor: pointer;
+}
+
 #stats {
 	text-align: center;
 }
@@ -73,14 +77,11 @@ th {
 		font-size: 1.5em;
 	}
 	.beer:nth-child(even) {
-		padding-bottom: 15px;
-		padding-top: 15px;
+		background-color: #d5e8f9;
 		margin-bottom: 15px;
 		margin-top: 15px;
-		background-color: #d5e8f9;
-		padding-left: 10%;
-		margin-left: -10%;
-		padding-right: 10%;
+		margin-left: -20px;
+		padding: 20px;
 	}
 	.brewery,.name {
 		font-weight: bold;

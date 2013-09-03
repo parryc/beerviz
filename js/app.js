@@ -1,22 +1,15 @@
-/**
-Page load
-**/
-
-$(document).ready(function(){
-  colorscale.create([
+colorscale.create([
         {'value':0, 'color':{'r':50,'g':50,'b':50}},
-        {'value':3.5,'color':{'r':238,'g':131,'b':103}},
-        {'value':10,'color':{'r':130,'g':255,'b':64}}
+        {'value':3.5,'color':{'r':234,'g':186,'b':110}},
+        {'value':10,'color':{'r':110,'g':176,'b':234}}
         ], "beer");
 
-  // $('.tablesorter').tablesorter({sortList: [[0,0]]});
-});
-
 function BeerCtrl($scope, $http, $timeout) {
-  var data = null, timeout = null, tempQuery;
+  var data = null, timeout = null, tempQuery, currentSort = [];
 
   $scope.query = '';
 
+  //For testing purposes only. Switch to pure angular once everything is pretty
   $.get('beer.json', function(response){
     data = response;
   },"json").promise().done(function(data){
@@ -28,6 +21,31 @@ function BeerCtrl($scope, $http, $timeout) {
 
     $scope.beers = data;
   });
+
+  $scope.getSort = function(item){
+    var loc, temp;
+    if(currentSort.indexOf(item) === -1 && currentSort.indexOf('-'+item) === -1 ) {
+      currentSort.unshift(item);
+    } else {
+      loc = currentSort.indexOf('-'+item);
+      if(loc === -1)
+        loc = currentSort.indexOf(item);
+      
+      if(item === currentSort[loc]) {
+        if(item.substring(0) === '-')
+          temp = item;
+        else
+          temp = "-"+item;
+      } else
+          temp = item;
+      console.log(currentSort);
+      console.log(loc);
+      currentSort.splice(loc,1);
+      currentSort.unshift(temp);
+    }
+
+    return currentSort;
+  };
 
   $scope.$watch('search', function (val) {
       if (timeout) $timeout.cancel(timeout);
