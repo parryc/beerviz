@@ -7,8 +7,6 @@ colorscale.create([
 function BeerCtrl($scope, $http, $timeout) {
   var data = null, timeout = null, tempQuery, currentSort = [];
 
-  $scope.query = '';
-
   //For testing purposes only. Switch to pure angular once everything is pretty
   $.get('beer.json', function(response){
     data = response;
@@ -20,6 +18,7 @@ function BeerCtrl($scope, $http, $timeout) {
     }
 
     $scope.beers = data;
+    $scope.query = '';
   });
 
   $scope.getSort = function(item){
@@ -38,8 +37,7 @@ function BeerCtrl($scope, $http, $timeout) {
           temp = "-"+item;
       } else
           temp = item;
-      console.log(currentSort);
-      console.log(loc);
+
       currentSort.splice(loc,1);
       currentSort.unshift(temp);
     }
