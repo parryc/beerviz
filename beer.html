@@ -100,7 +100,7 @@ function bar(dataUrl, filter){
   });
 }
 
-function vertbar(dataUrl, filter){
+function vertbar(dataUrl, filter, filterFunction){
 
   d3.select('svg').remove();
 
@@ -114,6 +114,7 @@ function vertbar(dataUrl, filter){
   d3.json(dataUrl,function(error, data){
     var max, h = 200, w = 10; 
 
+    data = filterFunction(data);
     data = reduceList(data, filter);
 
     d3.select('svg').attr('width',(data.length+1)*20);
@@ -294,13 +295,12 @@ function reduceList(data, reducer){
   var reduced = [],
     hits;
 
+  //The data is still messy - some of the years/months are strings.
   if(reducer === "drinkDate"){
     data.forEach(function(d){
-      d.drinkDate = d.drinkYear+"-"+d.drinkMonth;
+      d.drinkDate = parseInt(d.drinkYear,10)+"-"+parseInt(d.drinkMonth,10);
     });
   }
-
-  //The data is still messy - some of the years/months are strings.
   if(reducer === "drinkYear"){
     data.forEach(function(d){
       d.drinkYear = parseInt(d.drinkYear,10);
@@ -348,5 +348,11 @@ function aggregate(data, field){
   return aggregated;
 }
 
-vertbar('beer.json','style');
+function filterByStyle(data, style) {
+  var filter = function(e) {
+    return e.style === style
+  }
+  return data.filter(filter);
+}
+vertbar('beer.json','style', filterByStyle);
 </script>
