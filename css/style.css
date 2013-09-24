@@ -71,17 +71,23 @@ th {
 
 @media(max-width: 500px){
 	#container {
-		width: 95%;
+		width: 100%;
+		margin: 0;
+		padding: 0;
 	}
+
 	#header {
 		font-size: 1.5em;
 	}
 	.beer:nth-child(even) {
 		background-color: #d5e8f9;
-		margin-bottom: 15px;
-		margin-top: 15px;
-		margin-left: -20px;
-		padding: 20px;
+		margin-top: -5px;
+	}
+	.beer {
+		padding: 10px;
+		margin-bottom: -5px;
+		margin-top: 5px;
+		margin-left: -10px;
 	}
 	.brewery,.name {
 		font-weight: bold;
@@ -106,20 +112,6 @@ th {
 	}
 }
 
-@media(max-width: 980px){
-	.post-title {
-		font-size: 2em;
-		bottom: 8px;
-		width: 175px;
-	}
-	.category-post {
-		font-size: 2em;
-	}
-	.post {
-		padding-bottom: 50px;
-		margin-bottom: 0;
-	}
-}
 
 @media(max-width: 640px){
 	.title-large {
@@ -131,22 +123,5 @@ th {
 	.date {
 		display: none;
 	}
-}
-
-/************
-Tablesorter
-************/
-table.tablesorter thead tr .header {
-	background-image: url(bg.gif);
-	background-repeat: no-repeat;
-	background-position: center right;
-	cursor: pointer;
-}
-
-table.tablesorter thead tr .headerSortUp {
-	background-image: url(asc.gif);
-}
-table.tablesorter thead tr .headerSortDown {
-	background-image: url(desc.gif);
 }
 

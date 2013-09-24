@@ -5,7 +5,7 @@ colorscale.create([
         ], "beer");
 
 function BeerCtrl($scope, $http, $timeout) {
-  var data = null, timeout = null, tempQuery, currentSort = [];
+  var data = null, timeout = null, timeoutTime = 200, tempQuery = '', currentSort = [];
 
   //For testing purposes only. Switch to pure angular once everything is pretty
   $.get('beer.json', function(response){
@@ -13,7 +13,7 @@ function BeerCtrl($scope, $http, $timeout) {
   },"json").promise().done(function(data){
     for (var i = data.length - 1; i >= 0; i--) {
       data[i].color = colorscale.beer.pick(data[i].rating);
-      data[i].date = new Date(parseInt(data[i].drinkMonth,10)+"/"+"01/"+data[i].drinkYear);
+      data[i].date = new Date(parseInt(data[i].drinkMonth,10)+"/"+"01/"+data[i].drinkYear);//moment(parseInt(data[i].drinkMonth,10)+"/"+"01/"+data[i].drinkYear).format('MMM, YYYY');
       data[i].dateSmall = parseInt(data[i].drinkMonth,10)+"/"+data[i].drinkYear;
     }
 
@@ -45,13 +45,21 @@ function BeerCtrl($scope, $http, $timeout) {
     return currentSort;
   };
 
+
   $scope.$watch('search', function (val) {
       if (timeout) $timeout.cancel(timeout);
 
       tempQuery = val;
       timeout = $timeout(function() {
+        if(tempQuery.length > 2) {
           $scope.query = tempQuery;
-      }, 200);
+          timeoutTime = 200;
+        } else {
+          if(tempQuery.length === 0)
+            $scope.query = '';
+          timeoutTime = 400;
+        }
+      }, timeoutTime);
   });
 
 }

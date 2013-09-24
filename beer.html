@@ -28,6 +28,9 @@ text {
 <script src="js/libs/moment.js"></script>
 <script>
 
+//Interaction
+
+
 function bar(dataUrl, filter){
 
   d3.select('svg').remove();
@@ -67,7 +70,8 @@ function bar(dataUrl, filter){
         .attr("y", function(d, i) { return y(i);})
         .attr("width", function(d) { return x(d.count)})
         .attr("height", 20);
-    
+
+
     chart.selectAll("text")
         .data(data)
       .enter().append("text")
@@ -100,7 +104,7 @@ function bar(dataUrl, filter){
   });
 }
 
-function vertbar(dataUrl, filter){
+function vertbar(filter, secondFilter, filterText){
 
   d3.select('svg').remove();
 
@@ -109,89 +113,105 @@ function vertbar(dataUrl, filter){
                 .attr('class','chart')
                 .attr('height',height)
               .append('g')
-                .attr("transform","translate(10,15)");
+                .attr("transform","translate(10,15)"),
+      h = 200,
+      w = 10,
+      max, fullData;
 
-  d3.json(dataUrl,function(error, data){
-    var max, h = 200, w = 10; 
+  data = window.beers;
 
-    data = reduceList(data, filter);
+  if(secondFilter)
+    data = filterByX(data, secondFilter, filterText);
+  fullData = data;
+  data = reduceList(data, filter);
+  d3.select('svg').attr('width',(data.length+1)*w*2);
+  
+  max = d3.entries(data).sort(function(a, b) { return d3.descending(a.value.count, b.value.count); })[0];
 
-    d3.select('svg').attr('width',(data.length+1)*20);
-    
-    max = d3.entries(data).sort(function(a, b) { return d3.descending(a.value.count, b.value.count); })[0];
+  // x = d3.scale.linear()
+  //   .domain([0, max.value.count])
+  //   .range([0, width-300]);
+  // y = function(i) { return 20 * i; };
 
-    // x = d3.scale.linear()
-    //   .domain([0, max.value.count])
-    //   .range([0, width-300]);
-    // y = function(i) { return 20 * i; };
+  x = d3.scale.linear()
+        .domain([0, 1])
+        .range([0, w]);
 
-    x = d3.scale.linear()
-          .domain([0, 1])
-          .range([0, w]);
-
-    if(filter === "rating") {
-      x = function(i) {
-        return data[i].filter*10*w;
-      }
-      d3.select('svg').attr('width',1000);
-
+  if(filter === "rating") {
+    x = function(i) {
+      return data[i].filter*10*w;
     }
+    d3.select('svg').attr('width',1000);
+  }
 
-    y = d3.scale.linear()
-          .domain([0, 100])
-          .rangeRound([0, h]);
+  if(filter === "drinkDate") {
+    x = function(i) {
+      return (parseInt(data[i].filter.substring(0,4),10)-2010)*(12*w) + parseInt(data[i].filter.substring(5),10)*w;
+    }
+    d3.select('svg').attr('width',3*12*w*2);   
+  }
 
-    // chart.selectAll("line")
-    //   .data(x.ticks(10))
-    // .enter().append("line")
-    //   .attr("x1", x)
-    //   .attr("x2", x)
-    //   .attr("y1", 0)
-    //   .attr("y2", (data.length+1)*20)
-    //   .style("stroke", "#ccc");
+  y = d3.scale.linear()
+        .domain([0, 100])
+        .rangeRound([0, h]);
 
-    chart.selectAll("rect").data(data)
-      .enter().append("rect")
-        .attr("x", function(d, i) { return x(i) - .5; })
-        .attr("y", function(d) { return h - y(d.count); })
-        .attr("width", function(d) { return w; })
-        .attr("height", function(d) { return y(d.count)+3; });
-    
-    chart.selectAll("text")
-        .data(data)
-      .enter().append("text")
-        .attr("x", function(d, i) { return x(i) - .5})
-        .attr("y", 0)
-        .attr("dx", 5)
-        .attr("dy", ".35em")
-        .attr("text-anchor", "start")
-        .attr("transform", function(d, i) { return "translate("+(w/2-.5+x(i))+","+(h-x(i))+")rotate(90)"})
-        .text(function(d) { return d.filter});
+  // chart.selectAll("line")
+  //   .data(x.ticks(10))
+  // .enter().append("line")
+  //   .attr("x1", x)
+  //   .attr("x2", x)
+  //   .attr("y1", 0)
+  //   .attr("y2", (data.length+1)*20)
+  //   .style("stroke", "#ccc");
 
-    chart.selectAll(".count")
-        .data(data)
-      .enter().append("text")
-        .attr("x", function(d, i) { return x(i) - 5;})
-        .attr("y", function(d, i) { return 0; })
-        .attr("dx", 3)
-        // .attr("dy", ".35em")
-        .attr("text-anchor", "start")
-        .attr("class", "count")
-        .attr("transform", function(d, i) { return "translate(0,"+(h-y(d.count))+")"})
-        .text(function(d) { return d.count; });
+  chart.selectAll("rect").data(data)
+    .enter().append("rect")
+      .attr("x", function(d, i) { return x(i) - .5; })
+      .attr("y", function(d) { return h - y(d.count); })
+      .attr("width", function(d) { return w; })
+      .attr("height", function(d) { return y(d.count)+3; })
+      .on("click", function(d,i) {
+        $('#stats').html(''); 
+        d.ids.forEach(function(v){
+          $('#stats').append(fullData[v].brewery + ' ' + fullData[v].name + "<br/>")
+        });
+      });
+  
+  chart.selectAll("text")
+      .data(data)
+    .enter().append("text")
+      .attr("x", function(d, i) { return x(i) - .5})
+      .attr("y", 0)
+      .attr("dx", 5)
+      .attr("dy", ".35em")
+      .attr("text-anchor", "start")
+      .attr("transform", function(d, i) { return "translate("+(w/2-.5+x(i))+","+(h-x(i))+")rotate(90)"})
+      .text(function(d) { return d.filter});
 
-    // chart.selectAll(".rule")
-    //     .data(x.ticks(10))
-    //   .enter().append("text")
-    //     .attr("class", "rule")
-    //     .attr("x", x)
-    //     .attr("y", 0)
-    //     .attr("dy", -3)
-    //     .attr("text-anchor", "middle")
-    //     .text(String);
-  });
+  chart.selectAll(".count")
+      .data(data)
+    .enter().append("text")
+      .attr("x", function(d, i) { return x(i) - 5;})
+      .attr("y", function(d, i) { return 0; })
+      .attr("dx", 3)
+      // .attr("dy", ".35em")
+      .attr("text-anchor", "start")
+      .attr("class", "count")
+      .attr("transform", function(d, i) { return "translate(0,"+(h-y(d.count))+")"})
+      .text(function(d) { return d.count; });
 
 
+
+
+  // chart.selectAll(".rule")
+  //     .data(x.ticks(10))
+  //   .enter().append("text")
+  //     .attr("class", "rule")
+  //     .attr("x", x)
+  //     .attr("y", 0)
+  //     .attr("dy", -3)
+  //     .attr("text-anchor", "middle")
+  //     .text(String);
 }
 
 function linechart(dataUrl, filter){
@@ -285,6 +305,17 @@ function linechart(dataUrl, filter){
 //
 
 /*
+Load JSON data and save to global variable
+*/
+
+function load(url, callback) {
+  d3.json(url,function(error, data){
+    window.beers = data;
+    callback();
+  })
+}
+
+/*
   Reduces data to a simple count of a certain property.
   e.g. if reducer is "rating" it will return a count of all ratings
 
@@ -296,7 +327,7 @@ function reduceList(data, reducer){
 
   if(reducer === "drinkDate"){
     data.forEach(function(d){
-      d.drinkDate = d.drinkYear+"-"+d.drinkMonth;
+      d.drinkDate = parseInt(d.drinkYear,10)+"-"+parseInt(d.drinkMonth,10);
     });
   }
 
@@ -313,12 +344,13 @@ function reduceList(data, reducer){
   }
 
   //Check if the reduced list contains a count of each data element's individual "reducer"
-  data.forEach(function(d){
+  data.forEach(function(d, i){
     hits = $.grep(reduced, function(e){ return e.filter === d[reducer]; });
-    if(hits.length !== 0)
+    if(hits.length !== 0) {
       hits[0].count++;
-    else
-      reduced.push({filter: d[reducer], count: 1});
+      hits[0].ids.push(i);
+    } else
+      reduced.push({filter: d[reducer], count: 1, ids: [i]});
   });
   if(reducer === "drinkDate")
     reduced.sort(function(a, b) {
@@ -348,5 +380,19 @@ function aggregate(data, field){
   return aggregated;
 }
 
-vertbar('beer.json','style');
+var filterByX = function(data, type, filter){
+  var filterer = function(e) {
+    return e[type] === filter;
+  }
+  return data.filter(filterer);
+}
+
+if(!window.beers)
+  load('beer.json', function(){
+    vertbar('rating', 'style', 'IPA');
+
+  });
+
 </script>
+
+<div id="stats"></div>
