@@ -1,7 +1,7 @@
 colorscale.create([
-        {'value':0, 'color':{'r':50,'g':50,'b':50}},
-        {'value':3.5,'color':{'r':234,'g':186,'b':110}},
-        {'value':10,'color':{'r':110,'g':176,'b':234}}
+        {'value':0, 'color':{'r':94,'g':83,'b':64}},
+        {'value':2.5,'color':{'r':234,'g':186,'b':110}},
+        {'value':5,'color':{'r':110,'g':176,'b':234}}
         ], "beer");
 
 function BeerCtrl($scope, $http, $timeout) {
@@ -13,8 +13,9 @@ function BeerCtrl($scope, $http, $timeout) {
   },"json").promise().done(function(data){
     for (var i = data.length - 1; i >= 0; i--) {
       data[i].color = colorscale.beer.pick(data[i].rating);
-      data[i].date = new Date(parseInt(data[i].drinkMonth,10)+"/"+"01/"+data[i].drinkYear);//moment(parseInt(data[i].drinkMonth,10)+"/"+"01/"+data[i].drinkYear).format('MMM, YYYY');
-      data[i].dateSmall = parseInt(data[i].drinkMonth,10)+"/"+data[i].drinkYear;
+      data[i].wordRating = parseRating(data[i].rating);
+      data[i].date = new Date(data[i].drinkMonth+"/"+"01/"+data[i].drinkYear);//moment(parseInt(data[i].drinkMonth,10)+"/"+"01/"+data[i].drinkYear).format('MMM, YYYY');
+      data[i].dateSmall = data[i].drinkMonth+"/"+data[i].drinkYear;
     }
 
     $scope.beers = data;
@@ -55,7 +56,7 @@ function BeerCtrl($scope, $http, $timeout) {
         tempQuery = (val || 'definitelynotabeer');
       else
         tempQuery = (val || 'all');
-      
+
       timeout = $timeout(function() {
         if(tempQuery.length > 2) {
           if(tempQuery === 'all')
@@ -121,6 +122,22 @@ function findProp(list, property, name){
   return $.grep(list, function(item){
     return item[property] == name;
   });
+}
+
+function parseRating(rating){
+  var parts = (""+rating).split('.');
+  if(parts[1] === undefined)
+    parts[1] = "0";
+  if(parts[0] === "0")
+    return "Bad ("+parts[1]+")";
+  if(parts[0] === "1")
+    return "Meh ("+parts[1]+")";
+  if(parts[0] === "2")
+    return "Ok ("+parts[1]+")";
+  if(parts[0] === "3")
+    return "Good ("+parts[1]+")";
+  if(parts[0] === "4")
+    return "Great ("+parts[1]+")";
 }
 
 //Used for keyup delay.  From SO #1909441

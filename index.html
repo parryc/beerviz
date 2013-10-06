@@ -53,7 +53,7 @@
     <br/>
     <div class="row-fluid beer" ng-repeat="beer in beers | orderBy:sort | filter:query:strict">
       <div class="span5">
-        <span class="rating" style="background-color: {{beer.color}}">{{beer.rating}}</span>
+        <span class="rating" style="background-color: {{beer.color}}">{{beer.wordRating}}</span>
         <span class="brewery">{{beer.brewery}}</span> <span class="name">{{beer.name}}</span>
       </div>
       <div class="span3">
