@@ -4,36 +4,36 @@ block page-scripts
 	script(src="/javascripts/jquery.jeditable.mini.js")
 	script
 		$(document).ready(function(){
-			$('.beer').children().editable('edit');
+			$('.beer').children().find('td').editable('/edit');
 		});
 
 block content
-	each b in beers
-		.beer
-			.brewery(id="brewery_#{b._id}") #{b.brewery}
-			.name(id="name_#{b._id}") #{b.name}
-			.style(id="style_#{b._id}") #{b.style}
-			.country(id="country_#{b._id}") #{b.country}
-			.rating(id="rating_#{b._id}") #{b.rating}
-			.notes(id="notes_#{b._id}") #{b.notes}
-			.drinkLocationCity(id="drinkLocationCity_#{b._id}")
-				if (!b.drinkLocationCity)
-					| ADD!
-				else
-					| #{b.drinkLocationCity}
-			.drinkLocationCountry(id="drinkLocationCountry_#{b._id}")
-				if (!b.drinkLocationCountry)
-					| ADD!
-				else
-					| #{b.drinkLocationCountry}
-			.drinkMonth(id="drinkMonth_#{b._id}")
-				if (b.drinkMonth === 1 && b.drinkYear === 1970)
-					| ADD!
-				else
-					| #{b.drinkMonth}
-			.drinkYear(id="drinkYear_#{b._id}")
-				if (b.drinkYear === 1970)
-					| ADD!
-				else
-					| #{b.drinkYear}
-		br
+	table.beer
+		each b in beers
+			tr
+				td.brewery(id="brewery_#{b._id}") #{b.brewery}
+				td.name(id="name_#{b._id}") #{b.name}
+				td.style(id="style_#{b._id}") #{b.style}
+				td.country(id="country_#{b._id}") #{b.country}
+				td.rating(id="rating_#{b._id}") #{b.rating}
+				td.notes(id="notes_#{b._id}") #{b.notes}
+				td.drinkLocationCity(id="drinkLocationCity_#{b._id}")
+					if (!b.drinkLocationCity)
+						| ADD!
+					else
+						| #{b.drinkLocationCity}
+				td.drinkLocationCountry(id="drinkLocationCountry_#{b._id}")
+					if (!b.drinkLocationCountry)
+						| ADD!
+					else
+						| #{b.drinkLocationCountry}
+				td.drinkMonth(id="drinkMonth_#{b._id}")
+					if (b.drinkMonth === 1 && b.drinkYear === 1970)
+						| ADD!
+					else
+						| #{b.drinkMonth}
+				td.drinkYear(id="drinkYear_#{b._id}")
+					if (b.drinkYear === 1970)
+						| ADD!
+					else
+						| #{b.drinkYear}

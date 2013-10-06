@@ -47,18 +47,28 @@ function BeerCtrl($scope, $http, $timeout) {
 
 
   $scope.$watch('search', function (val) {
-      if (timeout) $timeout.cancel(timeout);
+      var tempQuery = '',
+          isMobile = $('#might-be-mobile').css("display") === "block";
+      if(timeout) $timeout.cancel(timeout);
 
-      tempQuery = val;
+      if(isMobile)
+        tempQuery = (val || 'definitelynotabeer');
+      else
+        tempQuery = (val || 'all');
+      
       timeout = $timeout(function() {
         if(tempQuery.length > 2) {
-          $scope.query = tempQuery;
-          timeoutTime = 200;
-        } else {
-          if(tempQuery.length === 0)
+          if(tempQuery === 'all')
             $scope.query = '';
-          timeoutTime = 400;
+          else
+            $scope.query = tempQuery;
+          timeoutTime = 200;
         }
+        // } else {
+        //   if(tempQuery.length === 0)
+        //     $scope.query = '';
+        //   timeoutTime = 400;
+        // }
       }, timeoutTime);
   });
 

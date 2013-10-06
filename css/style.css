@@ -110,6 +110,9 @@ th {
 	.title-small {
 		display: none;
 	}
+	#might-be-mobile {
+		display: none;
+	}
 }
 
 
