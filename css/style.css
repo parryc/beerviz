@@ -23,13 +23,6 @@ th {
 	cursor: pointer;
 }
 
-#stats {
-	text-align: center;
-}
-
-#stats b {
-	margin-top: 5px;
-}
 
 .centered {
 	float: none;
@@ -43,6 +36,32 @@ th {
 	margin-top: -4px;
 }
 
+.category {
+	display: inline-block;
+	margin-bottom: 5px;
+	margin-left: 3px;
+	margin-right: 3px;
+	padding: 3px 6px;
+	min-width: 10px;
+	text-align: center;
+	font-family: Monaco, "Liberation Mono", Courier, monospace;
+	background: #EEE;
+	color: rgb(111,176,235);
+	border-radius: 2px;
+	text-shadow: 1px 1px 0 black;
+	word-break: break-all;
+	cursor: pointer;
+}
+
+.category:hover {
+	color: black;
+}
+
+.category-active {
+	color: black;
+	background: #CCC;
+}
+
 .date,.date-small {
 	width: 75px;
 	margin-right: 5px;
@@ -52,6 +71,7 @@ th {
 .date-small {
 	width: 55px;
 }
+
 
 .rating {
 	text-align: center;

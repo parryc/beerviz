@@ -5,7 +5,7 @@ colorscale.create([
         ], "beer");
 
 function BeerCtrl($scope, $http, $timeout) {
-  var data = null, timeout = null, timeoutTime = 200, tempQuery = '', currentSort = [];
+  var data = null, timeout = null, timeoutTime = 200, tempQuery = '', currentSort = [], filteredList = [], filteredListIds = [];
 
   //For testing purposes only. Switch to pure angular once everything is pretty
   $.get('beer.json', function(response){
@@ -20,7 +20,33 @@ function BeerCtrl($scope, $http, $timeout) {
 
     $scope.beers = data;
     $scope.query = '';
+    $scope.filteredBeers = [];
+    $scope.filteredList = [];
   });
+
+  $scope.filterBeers = function(filterId){
+    var group, value, parts = filterId.split('-');
+    group = parts[0];
+    value = parts[1];
+    $scope.filteredBeers = filterByParam(group,value,$scope.beers);
+  }
+
+  $scope.getFilteredList = function(filterId, level){
+    filteredListIds[level] = filterId;
+    filteredList[level] =  getUniqueByParam(filterId, $scope.beers);
+
+    $scope.filteredList[level] = getUniqueByParam(filterId, $scope.beers);
+    if(level > 0) {
+      $scope.beerData = {};
+      $scope.filteredBeers = filterByParam(filteredListIds[level-1],filteredListIds[level],$scope.beers);
+      $scope.beerData.average = parseRating(average("rating",$scope.filteredBeers));
+    } else
+      $scope.filteredBeers = [];
+  }
+
+  $scope.isFilter = function(filterId){
+    return filteredListIds.indexOf(filterId) !== -1 ? 'category-active' : undefined;
+  }
 
   $scope.getSort = function(item){
     var loc, temp;
@@ -87,7 +113,7 @@ json: the data you want to analyze (json formatted)
 counts the number of objects in the json structure that have a certain property
 */
 
-function countByParam(param,json){
+function countByParam(param, json){
   var counts = [],
       add = {};
   for (var i = json.length - 1; i >= 0; i--) {
@@ -105,13 +131,40 @@ function countByParam(param,json){
   return counts;
 }
 
-function getUniqueByParam(param,json){
+function getUniqueByParam(param, json){
   var uniqueList = [];
   for (var i = json.length - 1; i >= 0; i--) {
     if($.inArray(json[i][param],uniqueList) === -1)
       uniqueList.push(json[i][param]);
   }
   return uniqueList;
+}
+
+function filterByParam(param, value, json) {
+  var list = [];
+   for (var i = json.length - 1; i >= 0; i--) {
+    if(json[i][param] === value)
+      list.push(json[i]);
+  }
+  return list;
+}
+
+function average(param, json) {
+  var total = 0,
+      length = json.length
+  for (var i = json.length - 1; i >= 0; i--) {
+    total += json[i][param];
+  }
+  return (total/length).toFixed(1);
+}
+
+function drillDown(paramArray, json){
+  var currentGroup = json;
+  for(var i = 0; i < paramArray.length; i++) {
+    currentGroup = filterByParam(paramArray[i].group, paramArray[i].value, currentGroup);
+  }
+
+  return currentGroup;
 }
 
 /*
@@ -126,6 +179,7 @@ function findProp(list, property, name){
 
 function parseRating(rating){
   var parts = (""+rating).split('.');
+  parts[1] = Math.ceil(parts[1]);
   if(parts[1] === undefined)
     parts[1] = "0";
   if(parts[0] === "0")
