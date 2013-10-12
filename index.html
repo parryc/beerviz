@@ -25,82 +25,91 @@
       <h1 id="header">Beers I Have Known and Loved</h1>
       <div id="might-be-mobile"></div>
     </div>
-    <div class="row-fluid centered" id="level-one-filters">
+    <div class="row-fluid centered">
+      <div class="menu-item" ng-class="isActive('stats')" ng-click="switchContext('stats')">Stats</div>
+      <div class="menu-item" ng-class="isActive('search')" ng-click="switchContext('search')">Search</div>
+    </div>
+    <div ng-show="isActiveContext('stats')">
+      <div class="row-fluid centered" id="level-one-filters">
+        <br/>
+        <br/>
+        <div ng-click="getFilteredList('style',0)" class="category" ng-class="isFilter('style')">Styles</div>
+        <div ng-click="getFilteredList('country',0)" class="category" ng-class="isFilter('country')">Countries</div>
+        <div ng-click="getFilteredList('drinkLocationCity',0)" class="category" ng-class="isFilter('drinkLocationCity')">Drink Location (City)</div>
+        <div ng-click="getFilteredList('drinkLocationCountry',0)" class="category" ng-class="isFilter('drinkLocationCountry')">Drink Location (Country)</div>
+        <br/><br/>
+      </div>
+      <div class="row-fluid category-columns">
+        <div ng-repeat="item in filteredList[0]" class="span2">
+          <div ng-repeat="beer in item" ng-click="getFilteredList(beer,1)" ng-class="isFilter(beer)" class="sub-category">
+            {{beer}}
+          </div>
+        </div>
+      </div>
+      <div class="row-fluid centered" ng-show="beerData">
+        Am I hidden?
+        {{beerData.average}}
+      </div>
+      <div class="row-fluid">
+        <br/>
+        <br/>
+        <div id="beer-list" class="span4">
+          <div ng-repeat="beer in filteredBeers" class="beer filtered-beer">
+            <div class="row-fluid">
+              <span class="rating" style="background-color: {{beer.color}}">{{beer.wordRating}}</span>
+              <span class="brewery">{{beer.brewery}}</span> <span class="name">{{beer.name}}</span>
+            </div>
+            <div class="row-fluid">
+              <img class="country" src="images/{{beer.country}}.png" title="{{beer.country}}"/> <span class="style">{{beer.style}}</span>
+            </div>
+            <div class="row-fluid">
+              <span class="date-small">{{beer.dateSmall}}</span><span class="date">{{beer.date | date: 'MMM, yyyy'}}</span>
+              <span class="location">{{beer.drinkLocationCity}}, {{beer.drinkLocationCountry}}</span>
+            </div>
+          </div>
+        </div>
+        <div id="stats" class="span6">
+          <div id="stats-vert-chart">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div ng-show="isActiveContext('search')">
+      <div class="row-fluid">
+        <div class="search">
+          <input id="search" ng-model="search" placeholder="Search" /><br/>
+          Exact: <input type="checkbox" ng-model="strict">
+        </div>
+      </div>
       <br/>
-      Tell me about
       <br/>
-      <div ng-click="getFilteredList('style',0)" class="category" ng-class="isFilter('style')">Styles</div>
-      <div ng-click="getFilteredList('country',0)" class="category" ng-class="isFilter('country')">Countries</div>
-      <div ng-click="getFilteredList('drinkLocationCity',0)" class="category" ng-class="isFilter('drinkLocationCity')">Drink Location (City)</div>
-      <div ng-click="getFilteredList('drinkLocationCountry',0)" class="category" ng-class="isFilter('drinkLocationCountry')">Drink Location (Country)</div>
-      <br/><br/>
-    </div>
-    <div class="row-fluid category-columns">
-      <div ng-repeat="item in filteredList[0]" class="span2">
-        <div ng-repeat="beer in item" ng-click="getFilteredList(beer,1)" ng-class="isFilter(beer)" class="sub-category">
-          {{beer}}
+      <div id="sorters" class="row-fluid beer">
+        <div class="span5">
+          <span class="rating" ng-click="sort = getSort('-rating')">★</span>
+          <span class="brewery" ng-click="sort = getSort('brewery')">Brewery</span> - <span class="name" ng-click="sort = getSort('name')">Beer name</span>
+        </div>
+        <div class="span3">
+          <img class="country" src="images/Unknown.png" title="Sort by Country" ng-click="sort = getSort('country')"/> 
+          <span class="style" ng-click="sort = getSort('style')">Style</span>
+        </div>
+        <div class="span4">
+          <span class="date-small" ng-click="sort = getSort('date')">Date</span><span class="date" ng-click="sort = getSort('date')">Date</span>
+          <span class="location" ng-click="sort = getSort('drinkLocationCountry')">Drink Location</span>
         </div>
       </div>
-    </div>
-    <div class="row-fluid centered" ng-show="beerData">
-      Am I hidden?
-      {{beerData.average}}
-    </div>
-    <div class="row-fluid">
-      <div id="beer-list" class="span4">
-        <div ng-repeat="beer in filteredBeers" class="beer filtered-beer">
-          <div class="row-fluid">
-            <span class="rating" style="background-color: {{beer.color}}">{{beer.wordRating}}</span>
-            <span class="brewery">{{beer.brewery}}</span> <span class="name">{{beer.name}}</span>
-          </div>
-          <div class="row-fluid">
-            <img class="country" src="images/{{beer.country}}.png" title="{{beer.country}}"/> <span class="style">{{beer.style}}</span>
-          </div>
-          <div class="row-fluid">
-            <span class="date-small">{{beer.dateSmall}}</span><span class="date">{{beer.date | date: 'MMM, yyyy'}}</span>
-            <span class="location">{{beer.drinkLocationCity}}, {{beer.drinkLocationCountry}}</span>
-          </div>
+      <br/>
+      <div id="full-beer-list" class="row-fluid beer" ng-repeat="beer in beers | orderBy:sort | filter:query:strict">
+        <div class="span5">
+          <span class="rating" style="background-color: {{beer.color}}">{{beer.wordRating}}</span>
+          <span class="brewery">{{beer.brewery}}</span> <span class="name">{{beer.name}}</span>
         </div>
-      </div>
-      <div id="stats" class="span6">
-        <div id="stats-vert-chart">
+        <div class="span3">
+          <img class="country" src="images/{{beer.country}}.png" title="{{beer.country}}"/> <span class="style">{{beer.style}}</span>
         </div>
-      </div>
-    </div>
-    <div class="row-fluid">
-      <div class="search">
-        <input id="search" ng-model="search" placeholder="Search" /><br/>
-        Exact: <input type="checkbox" ng-model="strict">
-      </div>
-    </div>
-    <br/>
-    <br/>
-    <div id="sorters" class="row-fluid beer">
-      <div class="span5">
-        <span class="rating" ng-click="sort = getSort('-rating')">★</span>
-        <span class="brewery" ng-click="sort = getSort('brewery')">Brewery</span> - <span class="name" ng-click="sort = getSort('name')">Beer name</span>
-      </div>
-      <div class="span3">
-        <img class="country" src="images/Unknown.png" title="Sort by Country" ng-click="sort = getSort('country')"/> 
-        <span class="style" ng-click="sort = getSort('style')">Style</span>
-      </div>
-      <div class="span4">
-        <span class="date-small" ng-click="sort = getSort('date')">Date</span><span class="date" ng-click="sort = getSort('date')">Date</span>
-        <span class="location" ng-click="sort = getSort('drinkLocationCountry')">Drink Location</span>
-      </div>
-    </div>
-    <br/>
-    <div id="full-beer-list" class="row-fluid beer" ng-repeat="beer in beers | orderBy:sort | filter:query:strict">
-      <div class="span5">
-        <span class="rating" style="background-color: {{beer.color}}">{{beer.wordRating}}</span>
-        <span class="brewery">{{beer.brewery}}</span> <span class="name">{{beer.name}}</span>
-      </div>
-      <div class="span3">
-        <img class="country" src="images/{{beer.country}}.png" title="{{beer.country}}"/> <span class="style">{{beer.style}}</span>
-      </div>
-      <div class="span4">
-        <span class="date-small">{{beer.dateSmall}}</span><span class="date">{{beer.date | date: 'MMM, yyyy'}}</span>
-        <span class="location">{{beer.drinkLocationCity}}, {{beer.drinkLocationCountry}}</span>
+        <div class="span4">
+          <span class="date-small">{{beer.dateSmall}}</span><span class="date">{{beer.date | date: 'MMM, yyyy'}}</span>
+          <span class="location">{{beer.drinkLocationCity}}, {{beer.drinkLocationCountry}}</span>
+        </div>
       </div>
     </div>
   </div>

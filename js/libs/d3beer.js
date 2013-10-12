@@ -35,15 +35,15 @@ function vertbar(filter, secondFilter, filterText){
   if(filter === "rating") {
     x = function(i) {
       return data[i].filter*10*w;
-    }
+    };
     d3.select('svg').attr('width',500);
   }
 
   if(filter === "drinkDate") {
     x = function(i) {
       return (parseInt(data[i].filter.substring(0,4),10)-2010)*(12*w) + parseInt(data[i].filter.substring(5),10)*w;
-    }
-    d3.select('svg').attr('width',3*12*w*2);   
+    };
+    d3.select('svg').attr('width',3*12*w*2);
   }
 
   y = d3.scale.linear()
@@ -61,27 +61,27 @@ function vertbar(filter, secondFilter, filterText){
 
   chart.selectAll("rect").data(data)
     .enter().append("rect")
-      .attr("x", function(d, i) { return x(i) - .5; })
-      .attr("y", function(d) { return h - y(d.count); })
+      .attr("x", function(d, i) { return x(i) - 0.5;})
+      .attr("y", function(d) { return h - y(d.count);})
       .attr("width", function(d) { return w; })
-      .attr("height", function(d) { return y(d.count)+3; })
+      .attr("height", function(d) { return y(d.count)+3;})
       .on("click", function(d,i) {
-        $('#stats').html(''); 
+        $('#stats').html('');
         d.ids.forEach(function(v){
-          $('#stats').append(fullData[v].brewery + ' ' + fullData[v].name + "<br/>")
+          $('#stats').append(fullData[v].brewery + ' ' + fullData[v].name + "<br/>");
         });
       });
   
   chart.selectAll("text")
       .data(data)
     .enter().append("text")
-      .attr("x", function(d, i) { return x(i) - .5})
+      .attr("x", function(d, i) { return x(i) - 0.5;})
       .attr("y", 0)
       .attr("dx", 5)
       .attr("dy", ".35em")
       .attr("text-anchor", "start")
-      .attr("transform", function(d, i) { return "translate("+(w/2-.5+x(i))+","+(h-x(i))+")rotate(90)"})
-      .text(function(d) { return d.filter});
+      .attr("transform", function(d, i) { return "translate("+(w/2-0.5+x(i))+","+(h-x(i))+")rotate(90)";})
+      .text(function(d) { return d.filter;});
 
   chart.selectAll(".count")
       .data(data)
@@ -92,7 +92,7 @@ function vertbar(filter, secondFilter, filterText){
       // .attr("dy", ".35em")
       .attr("text-anchor", "start")
       .attr("class", "count")
-      .attr("transform", function(d, i) { return "translate(0,"+(h-y(d.count))+")"})
+      .attr("transform", function(d, i) { return "translate(0,"+(h-y(d.count))+")";})
       .text(function(d) { return d.count; });
 
 
@@ -207,7 +207,7 @@ function load(url, callback) {
   d3.json(url,function(error, data){
     window.beers = data;
     callback();
-  })
+  });
 }
 
 /*
@@ -230,12 +230,12 @@ function reduceList(data, reducer){
   if(reducer === "drinkYear"){
     data.forEach(function(d){
       d.drinkYear = parseInt(d.drinkYear,10);
-    })
+    });
   }
   if(reducer === "drinkMonth"){
     data.forEach(function(d){
       d.drinkMonth = parseInt(d.drinkMonth,10);
-    })
+    });
   }
 
   //Check if the reduced list contains a count of each data element's individual "reducer"
@@ -278,9 +278,9 @@ function aggregate(data, field){
 var filterByX = function(data, type, filter){
   var filterer = function(e) {
     return e[type] === filter;
-  }
+  };
   return data.filter(filterer);
-}
+};
 
 if(!window.beers)
   load('beer.json', function(){

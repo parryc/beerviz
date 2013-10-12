@@ -22,6 +22,7 @@ function BeerCtrl($scope, $http, $timeout) {
     $scope.query = '';
     $scope.filteredBeers = [];
     $scope.filteredList = [];
+    $scope.activeContext = 'stats';
   });
 
   $scope.filterBeers = function(filterId){
@@ -52,6 +53,14 @@ function BeerCtrl($scope, $http, $timeout) {
     return filteredListIds.indexOf(filterId) !== -1 ? 'category-active' : undefined;
   };
 
+  $scope.isActive = function(menu){
+    return $scope.activeContext === menu ? 'menu-item-active' : undefined;
+  };
+
+  $scope.isActiveContext = function(context){
+    return $scope.activeContext === context;
+  };
+
   $scope.getSort = function(item){
     var loc, temp;
     if(currentSort.indexOf(item) === -1 && currentSort.indexOf('-'+item) === -1 ) {
@@ -74,6 +83,10 @@ function BeerCtrl($scope, $http, $timeout) {
     }
 
     return currentSort;
+  };
+
+  $scope.switchContext = function(context){
+    $scope.activeContext = context;
   };
 
 

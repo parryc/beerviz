@@ -88,6 +88,32 @@ th {
 	margin-top: -5px;
 }
 
+.menu-item {
+	display: inline-block;
+	margin-bottom: 5px;
+	margin-left: 3px;
+	margin-right: 3px;
+	padding: 15px 6px;
+	min-width: 10px;
+	text-align: center;
+	font-size: 2.5em;
+	background: rgb(111,176,235);
+	color: #EEE;
+	border-radius: 5px;
+	text-shadow: 1px 1px 0 black;
+	word-break: break-all;
+	cursor: pointer;
+}
+
+.menu-item:hover {
+	background: #9cc9f1;
+}
+
+.menu-item-active {
+	color: black;
+	background: #C9E1F7;
+}
+
 .rating {
 	text-align: center;
 	width: 100px;
