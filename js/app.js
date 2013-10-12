@@ -29,24 +29,28 @@ function BeerCtrl($scope, $http, $timeout) {
     group = parts[0];
     value = parts[1];
     $scope.filteredBeers = filterByParam(group,value,$scope.beers);
-  }
+  };
 
   $scope.getFilteredList = function(filterId, level){
     filteredListIds[level] = filterId;
-    filteredList[level] =  getUniqueByParam(filterId, $scope.beers);
+    $scope.filteredList[level] = chunk(getUniqueByParam(filterId, $scope.beers).sort(function (a, b) {
+      return a.localeCompare(b);
+    }),15);
 
-    $scope.filteredList[level] = getUniqueByParam(filterId, $scope.beers);
+    console.log($scope.filteredList[level]);
+
     if(level > 0) {
       $scope.beerData = {};
       $scope.filteredBeers = filterByParam(filteredListIds[level-1],filteredListIds[level],$scope.beers);
       $scope.beerData.average = parseRating(average("rating",$scope.filteredBeers));
+      vertbar('rating',filteredListIds[level-1],filteredListIds[level]);
     } else
       $scope.filteredBeers = [];
-  }
+  };
 
   $scope.isFilter = function(filterId){
     return filteredListIds.indexOf(filterId) !== -1 ? 'category-active' : undefined;
-  }
+  };
 
   $scope.getSort = function(item){
     var loc, temp;
@@ -151,7 +155,7 @@ function filterByParam(param, value, json) {
 
 function average(param, json) {
   var total = 0,
-      length = json.length
+      length = json.length;
   for (var i = json.length - 1; i >= 0; i--) {
     total += json[i][param];
   }
@@ -179,9 +183,9 @@ function findProp(list, property, name){
 
 function parseRating(rating){
   var parts = (""+rating).split('.');
-  parts[1] = Math.ceil(parts[1]);
   if(parts[1] === undefined)
     parts[1] = "0";
+  parts[1] = Math.ceil(parts[1]);
   if(parts[0] === "0")
     return "Bad ("+parts[1]+")";
   if(parts[0] === "1")
@@ -192,6 +196,14 @@ function parseRating(rating){
     return "Good ("+parts[1]+")";
   if(parts[0] === "4")
     return "Great ("+parts[1]+")";
+}
+
+function chunk(array, size){
+  var chunked = [];
+  for(var i = 0; i < array.length; i+=size){
+    chunked.push(array.slice(i,i+size));
+  }
+  return chunked;
 }
 
 //Used for keyup delay.  From SO #1909441

@@ -62,6 +62,10 @@ th {
 	background: #CCC;
 }
 
+.category-columns {
+	margin: 0 115px;
+}
+
 .date,.date-small {
 	width: 75px;
 	margin-right: 5px;
@@ -72,6 +76,17 @@ th {
 	width: 55px;
 }
 
+.emphasis {
+	font-weight: bold;
+}
+
+.filtered-beer{
+	margin: 15px 0;
+}
+.filtered-beer:nth-child(even) {
+	background-color: #d5e8f9;
+	margin-top: -5px;
+}
 
 .rating {
 	text-align: center;
@@ -86,6 +101,14 @@ th {
 
 .search {
 	text-align: center;
+}
+
+.sub-category {
+	cursor: pointer;
+}
+
+.sub-category:hover {
+	background: #ddd;
 }
 
 
@@ -146,5 +169,26 @@ th {
 	.date {
 		display: none;
 	}
+}
+
+/* Chart styles */
+
+text {
+  font: 10px sans-serif;
+}
+
+.axis path, .axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.chart rect {
+  fill: steelblue;
+  stroke: white;
+}
+
+.count {
+  fill: red;
 }
 
