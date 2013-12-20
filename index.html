@@ -15,6 +15,11 @@
   <script src="js/libs/moment.js"></script>
   <script src="js/libs/d3.v3.min.js"></script>
   <script src="js/libs/d3beer.js"></script>
+  <script src="js/libs/handlebars.runtime-v1.1.2.js"></script>
+  <script src="js/libs/list.min.js"></script>
+  <script src="js/libs/list.fuzzysearch.min.js"></script>
+  <script src="js/templates.js"></script>
+  <script src="js/load.js"></script>
   <script src="js/app.js"></script>
 </head>
 <body ng-controller="BeerCtrl">
@@ -75,41 +80,35 @@
       </div>
     </div>
     <div ng-show="isActiveContext('search')">
-      <div class="row-fluid">
-        <div class="search">
-          <input id="search" ng-model="search" placeholder="Search" /><br/>
-          Exact: <input type="checkbox" ng-model="strict">
+      <div id="beer-list-container">
+        <div class="row-fluid">
+            <input id="search" class="search" placeholder="Search" />
         </div>
-      </div>
-      <br/>
-      <br/>
-      <div id="sorters" class="row-fluid beer">
-        <div class="span5">
-          <span class="rating" ng-click="sort = getSort('-rating')">★</span>
-          <span class="brewery" ng-click="sort = getSort('brewery')">Brewery</span> - <span class="name" ng-click="sort = getSort('name')">Beer name</span>
+        <br/>
+        <br/>
+        <div id="sorters">
+          <li class="row-fluid beer">
+            <div class="span5">
+              <span class="sort rating" data-sort="rating">★</span>
+              <span class="sort brewery" data-sort="brewery">Brewery</span> - <span class="sort name" data-sort="name">Beer name</span>
+            </div>
+            <div class="span3">
+              <img class="sort country" src="images/Unknown.png" title="Sort by Country" data-sort="country"/> 
+              <span class="sort style" data-sort="style">Style</span>
+            </div>
+            <div class="span4">
+              <span class="sort date-small" data-sort="date">Date</span><span class="sort date"data-sort="date">Date</span>
+              <span class="sort location" data-sort="drinkLocationCountry">Drink Location</span>
+            </div>
+          </li>
         </div>
-        <div class="span3">
-          <img class="country" src="images/Unknown.png" title="Sort by Country" ng-click="sort = getSort('country')"/> 
-          <span class="style" ng-click="sort = getSort('style')">Style</span>
-        </div>
-        <div class="span4">
-          <span class="date-small" ng-click="sort = getSort('date')">Date</span><span class="date" ng-click="sort = getSort('date')">Date</span>
-          <span class="location" ng-click="sort = getSort('drinkLocationCountry')">Drink Location</span>
-        </div>
-      </div>
-      <br/>
-      <div id="full-beer-list" class="row-fluid beer" ng-repeat="beer in beers | orderBy:sort | filter:query:strict">
-        <div class="span5">
-          <span class="rating" style="background-color: {{beer.color}}">{{beer.wordRating}}</span>
-          <span class="brewery">{{beer.brewery}}</span> <span class="name">{{beer.name}}</span>
-        </div>
-        <div class="span3">
-          <img class="country" src="images/{{beer.country}}.png" title="{{beer.country}}"/> <span class="style">{{beer.style}}</span>
-        </div>
-        <div class="span4">
-          <span class="date-small">{{beer.dateSmall}}</span><span class="date">{{beer.date | date: 'MMM, yyyy'}}</span>
-          <span class="location">{{beer.drinkLocationCity}}, {{beer.drinkLocationCountry}}</span>
-        </div>
+        <br/>
+        <input class="search" placeholder="Search" />
+        <button class="sort" data-sort="name">
+          Sort
+        </button>
+        <ul id="full-beer-list" class="list">
+        </ul>
       </div>
     </div>
   </div>

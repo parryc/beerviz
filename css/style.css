@@ -14,6 +14,10 @@ th {
 	min-width: 100px;
 }
 
+li {
+	display: block;
+}
+
 #container {
 	width: 70%;
 	margin: 0 auto;
@@ -23,6 +27,10 @@ th {
 	cursor: pointer;
 }
 
+
+#full-beer-list {
+	margin-left: -40px;
+}
 
 .centered {
 	float: none;
