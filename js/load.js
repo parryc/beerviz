@@ -42,9 +42,8 @@ d3.json("beer.json", function(data) {
       multiSearch: true
   },
   options = {
-    valueNames: [ 'name', 'brewery', 'rating', 'date', 'country', 'location' ],
+    valueNames: [ 'name', 'brewery', 'rating', 'date', 'country', 'location-country', 'style' ],
     page: 1000
   },
   beerList = new List('beer-list-container', options);
-
 });

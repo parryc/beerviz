@@ -39,7 +39,7 @@ li {
 	text-align: center;
 }
 
-.country {
+.country, .country-pic {
 	width: 32px;
 	margin-top: -4px;
 }
@@ -94,6 +94,10 @@ li {
 .filtered-beer:nth-child(even) {
 	background-color: #d5e8f9;
 	margin-top: -5px;
+}
+
+.hidden {
+	display: none;
 }
 
 .menu-item {
