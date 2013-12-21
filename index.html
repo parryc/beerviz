@@ -31,10 +31,10 @@
       <div id="might-be-mobile"></div>
     </div>
     <div class="row-fluid centered">
-      <div class="menu-item" ng-class="isActive('stats')" ng-click="switchContext('stats')">Stats</div>
-      <div class="menu-item" ng-class="isActive('search')" ng-click="switchContext('search')">Search</div>
+      <div id="search-toggle" class="menu-item" ng-class="isActive('search')" ng-click="switchContext('search')">Search</div>
+      <div id="stats-toggle" class="menu-item" ng-class="isActive('stats')" ng-click="switchContext('stats')">Stats</div>
     </div>
-    <div ng-show="isActiveContext('stats')">
+    <div id="stats-box">
       <div class="row-fluid centered" id="level-one-filters">
         <br/>
         <br/>
@@ -79,9 +79,9 @@
         </div>
       </div>
     </div>
-    <div ng-show="isActiveContext('search')">
+    <div id="search-box">
       <div id="beer-list-container">
-        <div class="row-fluid">
+        <div class="row-fluid centered">
             <input id="search" class="search" placeholder="Search" />
         </div>
         <br/>
@@ -103,14 +103,11 @@
           </li>
         </div>
         <br/>
-        <input class="search" placeholder="Search" />
-        <button class="sort" data-sort="name">
-          Sort
-        </button>
         <ul id="full-beer-list" class="list">
         </ul>
       </div>
     </div>
   </div>
+  <script src="js/events.js"></script>
 </body>
 </html>

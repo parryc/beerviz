@@ -32,6 +32,7 @@ Handlebars.registerHelper('date', function(drinkMonth, drinkYear){
 
 
 d3.json("beer.json", function(data) {
+  window.beerlist = data;
   $('#full-beer-list').html(compiledTemplate(data));
 
   var fuzzyOptions = {
