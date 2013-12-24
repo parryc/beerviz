@@ -30,7 +30,7 @@ Handlebars.registerHelper('wordRating', function(rating) {
 
 Handlebars.registerHelper('date', function(drinkMonth, drinkYear){
   var months = "Jan_Feb_Mar_Apr_May_Jun_Jul_Aug_Sep_Oct_Nov_Dec".split("_");
-  return months[parseInt(drinkMonth,10)]+", "+drinkYear;
+  return months[parseInt(drinkMonth,10)-1]+", "+drinkYear;
 });
 
 

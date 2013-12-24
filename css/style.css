@@ -81,7 +81,7 @@ li {
 }
 
 .date-small {
-	width: 55px;
+	width: 60px;
 }
 
 .emphasis {
@@ -160,6 +160,15 @@ li {
 	#header {
 		font-size: 1.5em;
 	}
+
+	#sorters {
+		/*background: rgb(124, 183, 236);*/
+		width: 100%;
+		padding: 10px;
+		margin-left: -10px;
+		/*border-bottom: 3px solid black;*/
+		/*border-top: 3px solid black;*/
+	}
 	.beer:nth-child(even) {
 		background-color: #d5e8f9;
 		margin-top: -5px;
@@ -182,7 +191,7 @@ li {
 }
 
 @media(min-width: 500px){
-	hr,.date-small {
+	.date-small {
 		display: none;
 	} 
 }
@@ -209,7 +218,7 @@ li {
 	}
 }
 
-/* Chart styles */
+/* Chart styles 
 
 text {
   font: 10px sans-serif;
@@ -229,4 +238,3 @@ text {
 .count {
   fill: red;
 }
-

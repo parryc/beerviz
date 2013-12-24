@@ -43,8 +43,12 @@ function program1(depth0,data) {
   else { stack2 = (depth0 && depth0.style); stack2 = typeof stack2 === functionType ? stack2.call(depth0, {hash:{},data:data}) : stack2; }
   buffer += escapeExpression(stack2)
     + "</span>\r\n  </div>\r\n  <div class=\"span4\">\r\n    <span class=\"date-small\">";
-  if (stack2 = helpers.dateSmall) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
-  else { stack2 = (depth0 && depth0.dateSmall); stack2 = typeof stack2 === functionType ? stack2.call(depth0, {hash:{},data:data}) : stack2; }
+  if (stack2 = helpers.drinkMonth) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
+  else { stack2 = (depth0 && depth0.drinkMonth); stack2 = typeof stack2 === functionType ? stack2.call(depth0, {hash:{},data:data}) : stack2; }
+  buffer += escapeExpression(stack2)
+    + "/";
+  if (stack2 = helpers.drinkYear) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
+  else { stack2 = (depth0 && depth0.drinkYear); stack2 = typeof stack2 === functionType ? stack2.call(depth0, {hash:{},data:data}) : stack2; }
   buffer += escapeExpression(stack2)
     + "</span><span class=\"date\"><span class=\"hidden\">";
   if (stack2 = helpers.drinkYear) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
