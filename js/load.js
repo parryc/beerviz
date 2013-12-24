@@ -25,15 +25,18 @@ Handlebars.registerHelper('wordRating', function(rating) {
   if(parts[0] === "4")
     return "Great ("+parts[1]+")";
 });
-Handlebars.registerHelper('date', function(drinkMonth, drinkYear){
-  return moment(drinkMonth+"/"+"01/"+drinkYear).format('MMM, YYYY');
-});
+//No reason to load Moment.js for just one function call
+// So uh... just steal from their docs! :D
 
+Handlebars.registerHelper('date', function(drinkMonth, drinkYear){
+  var months = "Jan_Feb_Mar_Apr_May_Jun_Jul_Aug_Sep_Oct_Nov_Dec".split("_");
+  return months[parseInt(drinkMonth,10)]+", "+drinkYear;
+});
 
 
 d3.json("beer.json", function(data) {
   window.beerlist = data;
-  $('#full-beer-list').html(compiledTemplate(data));
+  document.getElementById('full-beer-list').innerHTML = compiledTemplate(data);
 
   var fuzzyOptions = {
     searchClass: "fuzzy-search",
