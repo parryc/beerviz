@@ -14,6 +14,10 @@ th {
 	min-width: 100px;
 }
 
+li {
+	display: block;
+}
+
 #container {
 	width: 70%;
 	margin: 0 auto;
@@ -24,6 +28,10 @@ th {
 }
 
 
+#full-beer-list {
+	margin-left: -40px;
+}
+
 .centered {
 	float: none;
 	margin-left: auto;
@@ -31,7 +39,7 @@ th {
 	text-align: center;
 }
 
-.country {
+.country, .country-pic {
 	width: 32px;
 	margin-top: -4px;
 }
@@ -73,7 +81,7 @@ th {
 }
 
 .date-small {
-	width: 55px;
+	width: 60px;
 }
 
 .emphasis {
@@ -86,6 +94,10 @@ th {
 .filtered-beer:nth-child(even) {
 	background-color: #d5e8f9;
 	margin-top: -5px;
+}
+
+.hidden {
+	display: none;
 }
 
 .menu-item {
@@ -148,6 +160,15 @@ th {
 	#header {
 		font-size: 1.5em;
 	}
+
+	#sorters {
+		/*background: rgb(124, 183, 236);*/
+		width: 100%;
+		padding: 10px;
+		margin-left: -10px;
+		/*border-bottom: 3px solid black;*/
+		/*border-top: 3px solid black;*/
+	}
 	.beer:nth-child(even) {
 		background-color: #d5e8f9;
 		margin-top: -5px;
@@ -170,7 +191,7 @@ th {
 }
 
 @media(min-width: 500px){
-	hr,.date-small {
+	.date-small {
 		display: none;
 	} 
 }
@@ -197,7 +218,7 @@ th {
 	}
 }
 
-/* Chart styles */
+/* Chart styles 
 
 text {
   font: 10px sans-serif;
@@ -217,4 +238,3 @@ text {
 .count {
   fill: red;
 }
-

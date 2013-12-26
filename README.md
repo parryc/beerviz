@@ -13,7 +13,10 @@ This is a little app to visualize all of the glorious beer data I have collected
 # Let's get started.
 ## What is it at the moment?
 
-Currently this is not a full stack application.  It's *almost* a full stack application.  There is a Node.js backend that can add and edit beers and there is an Ember.js frontend that reads data from a JSON file.
+Currently this is not a full stack application.  It's *almost* a full stack application.  There is a Node.js backend that can add and edit beers and there are two front-facing pages for your beer elucidation: 
+
+* The index page, which is a speedy, mobile-oriented (I use it at the grocery store), filterable, sortable list of all the beer I've ever had. 
+* A stats page, which is still mostly a work in progress, which you can drill down and look at beers in more detail.
 
 ## Installation
 
@@ -26,9 +29,9 @@ Node backend
 * Navigate to `localhost:8332/add` to add and `localhost:8332/edit` (they're contentEditable divs) 
 * Export: `mongoexport --jsonArray --db beerviz --collection beers --out beer.json --journal`
 
-Ember.js Frontend
+Webpages
 
-* Make sure you have the `beer.json` file in there and just go to `index.html`
+* Just make sure you have a ```beer.json``` file in the main directory and you should be peachy keen. 
 
 ## THE FUTURE
 

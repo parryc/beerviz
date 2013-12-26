@@ -1,0 +1,21 @@
+{{#each .}}
+<li class="row-fluid beer">
+  <div class="span5">
+    <span class="rating" style="background-color: {{color rating}}"><span class="hidden">{{rating}}.0</span>{{wordRating rating}}</span>
+    <span class="brewery">{{brewery}}</span> <span class="name">{{name}}</span>
+  </div>
+  <div class="span3">
+    <img class="country-pic" src="images/{{country}}.png" title="{{country}}"/><span class="hidden country">{{country}}</span> <span class="style">{{style}}</span>
+  </div>
+  <div class="span4">
+    <span class="date-small">{{drinkMonth}}/{{drinkYear}}</span><span class="date"><span class="hidden">{{drinkYear}}-{{drinkMonth}}</span>{{date drinkMonth drinkYear}}</span>
+    <span class="location">
+      <span class="location-city">{{drinkLocationCity}}</span>,&nbsp;
+      <span class="location-country">
+        {{drinkLocationCountry}}
+        <span class="hidden">-{{drinkLocationCity}}</span>
+      </span>
+    </span>
+  </div>
+</li>
+{{/each}}
