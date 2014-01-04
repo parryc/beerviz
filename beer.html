@@ -24,8 +24,9 @@ text {
 <body>
 </body>
 <script src="js/libs/d3.v3.min.js"></script>
-<script src="js/libs/jquery.js"></script>
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
 <script src="js/libs/moment.js"></script>
+<script src="js/libs/underscore.js"></script>
 <script>
 
 //Interaction
@@ -296,6 +297,44 @@ function linechart(dataUrl, filter){
 
 }
 
+/*
+
+Data structures
+
+*/
+
+var styleHierarchy = {
+  "All" : {
+    "Ales" : {
+      "Belgian" : {
+        "Abbey Ales" : ["Abbey Dubbel", "Abbey Tripel", "Quadrupel"],
+        "Belgian Ales" : ["Belgian Ale", "Belgian Strong Ale"]
+      },
+      "Saisons" : ["Saison"],
+      "German" : {
+        "Ales" : ["Altbier","Kölsch"],
+        "Bocks" : ["Doppelbock","Dunkler Bock","Heller Bock","Weizen Bock"]
+      },
+      "IPAs" : ["IPA","Double IPA","Black IPA"],
+      "Other Ales" : {
+        "Pale Ales" : ["Old Ale","Bière de Garde","Amber Ale","Scotch Ale","Golden Ale"],
+        "American Ales" : ["American Strong Ale", "American Pale Ale"],
+        "English Ales" : ["English Pale Ale","Bitter","Premium Bitter","English Strong Ale"],
+        "Other Ales" : ["Barley Wine","Brown Ale","California Common","Cream Ale","Irish Ale","Scottish Ale","Traditional Ale"]
+      }
+    },
+    "Wheat Beers" : ["Dunkelweizen","Hefeweizen","Kristallweizen","Wheat Ale","Gose","Belgian White"],
+    "Lagers" : {
+        "German" : ["Dortmunder","Dunkel","Oktoberfest","Schwarzbier","Vienna","Zwickel"],
+        "Pilseners" : ["Pilsener","Imperial Pilsener"],
+        "Other Lagers" : ["American Dark Lager","Pale Lager","Malt Liquor","Specialty Grain"]
+    },
+    "Stouts/Porters" : ["Baltic Porter","Dry Stout","Foreign Stout","Imperial Stout","Smoked","Strong Porter","Porter","Sweet Stout","Stout"],
+    "Flavored" : ["Spice","Fruit Beer"],
+    "Lambics" : ["Lambic","Gueze","Brown Sour","Sour"]
+  }
+};
+
 
 //
 // H   H
@@ -315,11 +354,65 @@ function load(url, callback) {
   })
 }
 
+
+function jsonSearch(attribute, hierarchy) {
+  var h = hierarchy,
+      root = h.All,
+      result = [];
+
+  if(attribute === "All")
+    return root;
+  else 
+    return _jsonSearch(attribute, root);
+}
+
+function _jsonSearch(attribute, hierarchy) {
+  var h = hierarchy, 
+      result = [];
+  for(var key in h) {
+    if(key === attribute)
+      return h[key];
+    else if(!_.isArray(h[key]))
+        result = _.union(result,_jsonSearch(attribute, h[key]));
+  }
+
+  return result;
+}
+
+function flatten(object) {
+  var result = [];
+  if(_.isArray(object))
+    return object;
+  else {
+    for(var key in object) {
+      if(_.isArray(object[key]))
+        result = _.union(result,object[key]);
+      else
+        result = _.union(result,flatten(object[key]));
+    }
+    return result;
+  }
+}
+
+function getHierarchyDetails(attribute, hierarchy, type, list) {
+  var search = flatten(jsonSearch(attribute,hierarchy)),
+      result = [];
+
+  if(!_.isEmpty(search)) {
+    for (var i = 0; i < search.length; i++) {
+      result = _.union(result, list[type][search[i]]);
+    }
+    return result;
+  } else
+    return list[type][attribute];
+}
+
 /*
   Reduces data to a simple count of a certain property.
   e.g. if reducer is "rating" it will return a count of all ratings
 
   NOTE: use "drinkDate" to automatically merge drinkYear and drinkMonth
+  Dependency: jQuery GREP. But I deleted jQuery cause I didn't want to include it for a single function... 
 */
 function reduceList(data, reducer){
   var reduced = [],
@@ -380,6 +473,92 @@ function aggregate(data, field){
   return aggregated;
 }
 
+/*
+Create an index for each of the possible lookups
+*/
+
+function index(data){
+  var index = {
+    "brewery": {},
+    "country": {},
+    "drinkLocationCity": {},
+    "drinkLocationCountry": {},
+    "drinkDate": {},
+    "rating": {},
+    "style": {}
+  },
+  indexes = ['brewery','country','drinkLocationCity','drinkLocationCountry','drinkDate','rating','style'],
+  cat;
+
+  data.forEach(function(d, idx){
+    for (var j = indexes.length - 1; j >= 0; j--) {
+      cat = indexes[j];
+      if(cat === 'drinkDate')
+        d.drinkDate = moment(d.drinkYear+'-'+d.drinkMonth,'YYYY-MM').format('YYYY-MM');
+
+      if(index[cat][d[cat]] === undefined)
+        index[cat][d[cat]] = [idx];
+      else
+        index[cat][d[cat]].push(idx);
+    }
+  });
+
+
+  //takes an array of accessors and gets the intersect'd list
+  //ex. ["brewery.Ommegang","drinkLocationCity.Ithaca"]
+  index.get = function(accessors){
+    var temp = [],
+        split, intersect;
+
+    for (var i = 0; i < accessors.length; i++) {
+      split = accessors[i].split('.');
+      temp = index[split[0]];
+      console.log(split);
+      for(var j = 1; j < split.length; j++) {
+        temp = temp[split[j]];
+      }
+
+      if(intersect === undefined)
+        intersect = temp;
+      else
+        intersect = _.intersection(intersect, temp);
+    }
+
+    return intersect;
+  }
+
+
+  index.lookup = function(indexList){
+    var output = [];
+    for (var i = 0; i < indexList.length; i++) {
+      output.push(window.beers[indexList[i]]);
+    }
+    return output;
+  }
+
+  index.keys = function(section){
+    return _.keys(this[section]);
+  }
+
+  return index;
+}
+
+
+// function createCategoryIndex(category, hierarchy) {
+//   var list = window.beerIndex.keys(category),
+//       index = {},
+//       item;
+
+//   for (var i = 0; i < list.length; i++) {
+//     item = list[i];
+//     locations = hierarchy[item];
+//     for (var j = 0; j < locations.length; j++) {
+//       locations[j]
+//     };
+//   }
+
+// }
+
 var filterByX = function(data, type, filter){
   var filterer = function(e) {
     return e[type] === filter;
@@ -387,10 +566,12 @@ var filterByX = function(data, type, filter){
   return data.filter(filterer);
 }
 
+
+
 if(!window.beers)
   load('beer.json', function(){
     vertbar('rating', 'style', 'IPA');
-
+    window.beerIndex = index(window.beers);
   });
 
 </script>
