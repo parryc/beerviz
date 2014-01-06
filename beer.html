@@ -336,6 +336,7 @@ var styleHierarchy = {
 };
 
 
+
 //
 // H   H
 // HHHHH
@@ -466,8 +467,9 @@ function aggregate(data, field){
     if(aggregated[d[field]]) {
       aggregated[d[field]].count++;
       aggregated[d[field]].ratingTotal += d.rating;
+      aggregated[d[field]].average = (aggregated[d[field]].ratingTotal/aggregated[d[field]].count).toFixed(2);
     } else
-      aggregated[d[field]] = {count: 1, ratingTotal: d.rating};
+      aggregated[d[field]] = {count: 1, ratingTotal: d.rating, average: d.rating, name: d[field].toFixed(2)};
   });
 
   return aggregated;
@@ -484,10 +486,11 @@ function index(data){
     "drinkLocationCity": {},
     "drinkLocationCountry": {},
     "drinkDate": {},
+    "drinkYear": {},
     "rating": {},
     "style": {}
   },
-  indexes = ['brewery','country','drinkLocationCity','drinkLocationCountry','drinkDate','rating','style'],
+  indexes = ['brewery','country','drinkLocationCity','drinkLocationCountry','drinkDate','drinkYear','rating','style'],
   cat;
 
   data.forEach(function(d, idx){
@@ -572,8 +575,56 @@ if(!window.beers)
   load('beer.json', function(){
     vertbar('rating', 'style', 'IPA');
     window.beerIndex = index(window.beers);
+    window.yr2013 = _.where(window.beers,{'drinkYear':2013});
   });
+
+$(document).ready(function(){
+  $('#category, #limit, #sort, #year').change(function(){
+    var category = $('#category').val(),
+        limit = $('#limit').val(),
+        sortBy = $('#sort').val(),
+        range = $('#year').val().split('-'),
+        start = range[0] || 0,
+        end = range[1] || 9999,
+        beers = _.filter(window.beers,function(d){
+          return start <= d.drinkYear && d.drinkYear <= end; 
+        }),
+        agg = _.sortBy(aggregate(beers, category),function(d){ return d[sortBy] });
+
+    $('#list').html('');
+
+    for(var v in agg){
+      var star = "";
+      if(agg[v].count >= limit) {
+        if(agg[v].average > 2.5)
+          star = " **** "; 
+        $('#list').append("<div>"+star + agg[v].name + ": " + agg[v].average + ", " + agg[v].count+"</div>");
+      }
+    }
+  });
+
+
+});
 
 </script>
 
-<div id="stats"></div>
+<select id="category">
+  <option value="style">Style</option>
+  <option value="brewery">Brewery</option>
+  <option value="drinkLocationCountry">Country (Drink Location)</option>
+  <option value="country">Country (Brewery Location)</option>
+</select>
+<br/>
+<input type="text" id="limit" value="5" placeholder="Limit count" />
+<br/>
+<select id="sort">
+  <option value="count">Count</option>
+  <option value="average">Average</option>
+  <option value="name">Name</option>
+</select>
+<br/>
+<input type="text" id="year" value="2013" placeholder="Drink Year" />
+
+<div id="list"></div>
+
+<!-- <div id="stats"></div> -->
