@@ -6,24 +6,32 @@ text {
   font: 10px sans-serif;
 }
 
-.axis path, .axis line {
+svg {
+  font: 10px sans-serif;
+}
+
+path {
+  fill: steelblue;
+}
+
+.axis path,
+.axis line {
   fill: none;
   stroke: #000;
   shape-rendering: crispEdges;
 }
 
-.chart rect {
-  fill: steelblue;
-  stroke: white;
+.brush .extent {
+  stroke: #fff;
+  fill-opacity: .125;
+  shape-rendering: crispEdges;
 }
 
-.count {
-  fill: red;
-}
+
 </style>
 <body>
 </body>
-<script src="js/libs/d3.v3.min.js"></script>
+<script src="js/libs/d3.js"></script>
 <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
 <script src="js/libs/moment.js"></script>
 <script src="js/libs/underscore.js"></script>
@@ -215,7 +223,7 @@ function vertbar(filter, secondFilter, filterText){
   //     .text(String);
 }
 
-function linechart(dataUrl, filter){
+/*function linechart(dataUrl, filter){
   var margin = {top: 20, right: 20, bottom: 30, left: 50},
   width = 960 - margin.left - margin.right,
   height = 500 - margin.top - margin.bottom;
@@ -293,9 +301,213 @@ function linechart(dataUrl, filter){
       .datum(data)
       .attr("class", "line")
       .attr("d", line);
+  });} */
+
+
+//from the bostock himself: http://bl.ocks.org/mbostock/1667367
+function timeseriesChart(accessors){
+
+  var data = timeseries(accessors);
+
+  var brushed = function brushed() {
+    x.domain(brush.empty() ? x2.domain() : brush.extent());
+    focus.select("path").attr("d", area);
+    focus.select(".x.axis").call(xAxis);
+  }
+
+  var margin = {top: 10, right: 25, bottom: 100, left: 40},
+    margin2 = {top: 430, right: 10, bottom: 20, left: 40},
+    width = 960 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom,
+    height2 = 500 - margin2.top - margin2.bottom,
+    w = 50;
+
+  var parseDate = d3.time.format("%Y-%m").parse;
+
+  var x = d3.time.scale().range([0, width]),
+      x2 = d3.time.scale().range([0, width]),
+      y = d3.scale.linear().range([height, 0]),
+      y2 = d3.scale.linear().range([height2, 0]);
+
+  var xAxis = d3.svg.axis().scale(x).orient("bottom"),
+      xAxis2 = d3.svg.axis().scale(x2).orient("bottom"),
+      yAxis = d3.svg.axis().scale(y).orient("left");
+
+  var brush = d3.svg.brush()
+      .x(x2)
+      .on("brush", brushed);
+
+  var area = d3.svg.area()
+      .interpolate("linear")
+      .x(function(d) { return x(d.date); })
+      .y0(height)
+      .y1(function(d) { return y(d.count); });
+
+  var area2 = d3.svg.area()
+      .interpolate("linear")
+      .x(function(d) { return x2(d.date); })
+      .y0(height2)
+      .y1(function(d) { return y2(d.count); });
+
+  var svg = d3.select("body").append("svg")
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height + margin.top + margin.bottom);
+
+  svg.append("defs").append("clipPath")
+      .attr("id", "clip")
+    .append("rect")
+      .attr("width", width)
+      .attr("height", height);
+
+  var focus = svg.append("g")
+      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+  var context = svg.append("g")
+      .attr("transform", "translate(" + margin2.left + "," + margin2.top + ")");
+
+  var totalCount = 0;
+  data.forEach(function(d) {
+    d.date = parseDate(d.name);
+    totalCount = d.count;
+    d.count = totalCount;
   });
 
+
+  x.domain(d3.extent(data.map(function(d) { return d.date; })));
+  y.domain([0, d3.max(data.map(function(d) { return d.count; }))]);
+  x2.domain(x.domain());
+  y2.domain(y.domain());
+
+   // focus.selectAll("rect").data(data)
+   //    .enter().append("rect")
+   //      .attr("x", function(d) { return x(d.date) - w/2; })
+   //      .attr("y", function(d) { return y(d.count); })
+   //      .attr("width", function(d) { return w; })
+   //      .attr("height", function(d) { return height - y(d.count); })
+   //      .attr("clip-path", "url(#clip)")
+   //      .attr("d", area);
+
+  focus.append("path")
+      .datum(data)
+      .attr("clip-path", "url(#clip)")
+      .attr("d", area);
+
+  focus.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + height + ")")
+      .call(xAxis);
+
+  focus.append("g")
+      .attr("class", "y axis")
+      .call(yAxis);
+
+  context.append("path")
+      .datum(data)
+      .attr("d", area2);
+
+  context.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + height2 + ")")
+      .call(xAxis2);
+
+  context.append("g")
+      .attr("class", "x brush")
+      .call(brush)
+    .selectAll("rect")
+      .attr("y", -6)
+      .attr("height", height2 + 7);}
+
+function multiline(data) {
+  var margin = {top: 20, right: 80, bottom: 30, left: 50},
+    width = 960 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
+
+  var parseDate = d3.time.format("%Y-%m").parse;
+
+  var x = d3.time.scale()
+      .range([0, width]);
+
+  var y = d3.scale.linear()
+      .range([height, 0]);
+
+  var color = d3.scale.category10();
+
+  var xAxis = d3.svg.axis()
+      .scale(x)
+      .orient("bottom");
+
+  var yAxis = d3.svg.axis()
+      .scale(y)
+      .orient("left");
+
+  var line = d3.svg.line()
+      .interpolate("basis")
+      .x(function(d) { return x(d.date); })
+      .y(function(d) { return y(d.average); });
+
+  var svg = d3.select("body").append("svg")
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+
+  color.domain(d3.keys(data[0]).filter(function(key) { return key !== "date"; }));
+
+  data.forEach(function(d) {
+    d.date = parseDate(d.drinkDate);
+  });
+
+  var cities = color.domain().map(function(name) {
+    return {
+      name: name,
+      values: data.map(function(d) {
+        return {date: d.date, temperature: +d[name]};
+      })
+    };
+  });
+
+  x.domain(d3.extent(data, function(d) { return d.date; }));
+
+  y.domain([
+    d3.min(cities, function(c) { return d3.min(c.values, function(v) { return v.temperature; }); }),
+    d3.max(cities, function(c) { return d3.max(c.values, function(v) { return v.temperature; }); })
+  ]);
+
+  svg.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + height + ")")
+      .call(xAxis);
+
+  svg.append("g")
+      .attr("class", "y axis")
+      .call(yAxis)
+    .append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 6)
+      .attr("dy", ".71em")
+      .style("text-anchor", "end")
+      .text("Temperature (ºF)");
+
+  var city = svg.selectAll(".city")
+      .data(cities)
+    .enter().append("g")
+      .attr("class", "city");
+
+  city.append("path")
+      .attr("class", "line")
+      .attr("d", function(d) { return line(d.values); })
+      .style("stroke", function(d) { return color(d.name); });
+
+  city.append("text")
+      .datum(function(d) { return {name: d.name, value: d.values[d.values.length - 1]}; })
+      .attr("transform", function(d) { return "translate(" + x(d.value.date) + "," + y(d.value.temperature) + ")"; })
+      .attr("x", 3)
+      .attr("dy", ".35em")
+      .text(function(d) { return d.name; });
+
 }
+
 
 /*
 
@@ -344,6 +556,9 @@ var styleHierarchy = {
 // H   H
 //
 
+
+
+
 /*
 Load JSON data and save to global variable
 */
@@ -355,6 +570,37 @@ function load(url, callback) {
   })
 }
 
+//_.toArray removes them from being ordered
+function timeseries(accessors) {
+  return _.sortBy(_.toArray(aggregate(window.beerIndex.lookup(accessors),"drinkDate")),function(d){return d.name});
+}
+
+//merger = average or count
+//data = array of data
+//for: http://bl.ocks.org/mbostock/3884955
+function multiTimeseries(data, merger) {
+  var zipped = [], temp, totalCount, totalRating, dataList;
+  for (var i = 0; i < data.length; i++) {
+    dataList = data[i];
+    temp = [];
+    totalCount = 0;
+    totalRating = 0;
+    for(var d in dataList) {
+      totalCount += dataList[d].count;
+      totalRating += dataList[d].ratingTotal;
+      temp.push({
+        'date':d,
+        'value': (totalRating/totalCount).toFixed(2)
+      });
+    }
+    zipped.push({
+      name: i,
+      values: temp
+    });
+  }
+
+  return zipped;
+}
 
 function jsonSearch(attribute, hierarchy) {
   var h = hierarchy,
@@ -469,7 +715,7 @@ function aggregate(data, field){
       aggregated[d[field]].ratingTotal += d.rating;
       aggregated[d[field]].average = (aggregated[d[field]].ratingTotal/aggregated[d[field]].count).toFixed(2);
     } else
-      aggregated[d[field]] = {count: 1, ratingTotal: d.rating, average: d.rating, name: d[field].toFixed(2)};
+      aggregated[d[field]] = {count: 1, ratingTotal: d.rating, average: d.rating.toFixed(2), name: d[field]};
   });
 
   return aggregated;
@@ -516,7 +762,7 @@ function index(data){
     for (var i = 0; i < accessors.length; i++) {
       split = accessors[i].split('.');
       temp = index[split[0]];
-      console.log(split);
+
       for(var j = 1; j < split.length; j++) {
         temp = temp[split[j]];
       }
@@ -531,13 +777,20 @@ function index(data){
   }
 
 
-  index.lookup = function(indexList){
+  index._lookup = function(indexList){
     var output = [];
     for (var i = 0; i < indexList.length; i++) {
       output.push(window.beers[indexList[i]]);
     }
     return output;
   }
+
+  index.lookup = function(accessors) {
+    if(!_.isArray(accessors))
+      accessors = [accessors];
+    return this._lookup(this.get(accessors));
+  }
+
 
   index.keys = function(section){
     return _.keys(this[section]);
@@ -573,9 +826,10 @@ var filterByX = function(data, type, filter){
 
 if(!window.beers)
   load('beer.json', function(){
-    vertbar('rating', 'style', 'IPA');
+    // vertbar('rating', 'style', 'IPA');
     window.beerIndex = index(window.beers);
     window.yr2013 = _.where(window.beers,{'drinkYear':2013});
+    timeseriesChart(["style.Abbey Dubbel"]);
   });
 
 $(document).ready(function(){
@@ -584,12 +838,21 @@ $(document).ready(function(){
         limit = $('#limit').val(),
         sortBy = $('#sort').val(),
         range = $('#year').val().split('-'),
-        start = range[0] || 0,
-        end = range[1] || 9999,
-        beers = _.filter(window.beers,function(d){
-          return start <= d.drinkYear && d.drinkYear <= end; 
-        }),
-        agg = _.sortBy(aggregate(beers, category),function(d){ return d[sortBy] });
+        start, end, beers, agg;
+
+    if(range.length === 1) {
+      start = range[0];
+      end = range[0];
+    } else {
+      start = range[0] || 0;
+      end = range[1] || 9999;
+    }
+
+   beers = _.filter(window.beers,function(d){
+      return start <= d.drinkYear && d.drinkYear <= end; 
+    });
+    
+    agg = _.sortBy(aggregate(beers, category),function(d){ return d[sortBy] });
 
     $('#list').html('');
 
