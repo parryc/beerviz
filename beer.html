@@ -11,7 +11,7 @@ svg {
 }
 
 path {
-  fill: steelblue;
+  fill: none;
 }
 
 .axis path,
@@ -223,85 +223,7 @@ function vertbar(filter, secondFilter, filterText){
   //     .text(String);
 }
 
-/*function linechart(dataUrl, filter){
-  var margin = {top: 20, right: 20, bottom: 30, left: 50},
-  width = 960 - margin.left - margin.right,
-  height = 500 - margin.top - margin.bottom;
 
-  var parseDate = d3.time.format("%Y-%m").parse;
-  var parseYear = d3.time.format("%Y").parse;
-  var parseMonth = d3.time.format("%m").parse;
-
-  var x = d3.time.scale()
-    .range([0, width]);
-  if(filter === "rating")
-    x = d3.scale.linear().range([0,width]);
-
-  var y = d3.scale.linear()
-    .range([height, 0]);
-
-  var xAxis = d3.svg.axis()
-    .scale(x)
-    .orient("bottom")
-    .tickFormat(function(d, i){
-      return ""+d;
-    });
-
-  var yAxis = d3.svg.axis()
-    .scale(y)
-    .orient("left");
-
-  var line = d3.svg.line()
-    .interpolate("linear")
-    .x(function(d) { return x(d.filter); })
-    .y(function(d) { return y(d.count); });
-
-  var svg = d3.select("body").append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-    .append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-  d3.json(dataUrl, function(error, data) {
-    data = reduceList(data, filter);
-
-    data.forEach(function(d) {
-      if(filter === "drinkDate")
-        d.filter = parseDate(d.filter);
-      else if(filter === "drinkYear")
-        d.filter = parseYear(""+d.filter);
-      else if(filter === "drinkMonth")
-        d.filter = parseMonth(""+d.filter);
-      else
-        d.filter = ""+d.filter;
-      d.count = +d.count;
-    });
-    console.log(data);
-    x.domain(d3.extent(data, function(d) { return d.filter; }));
-    y.domain([0, d3.max(data, function(d) { return d.count; })]);
-    if(filter === "rating")
-      x.domain([0,10]);
-
-    svg.append("g")
-      .attr("class", "x axis")
-      .attr("transform", "translate(0," + height + ")")
-      .call(xAxis);
-
-    svg.append("g")
-      .attr("class", "y axis")
-      .call(yAxis)
-      .append("text")
-      .attr("transform", "rotate(-90)")
-      .attr("y", 6)
-      .attr("dy", ".71em")
-      .style("text-anchor", "end")
-      .text("Number of Beers");
-
-    svg.append("path")
-      .datum(data)
-      .attr("class", "line")
-      .attr("d", line);
-  });} */
 
 
 //from the bostock himself: http://bl.ocks.org/mbostock/1667367
@@ -441,9 +363,9 @@ function multiline(data) {
       .orient("left");
 
   var line = d3.svg.line()
-      .interpolate("basis")
+      .interpolate("linear")
       .x(function(d) { return x(d.date); })
-      .y(function(d) { return y(d.average); });
+      .y(function(d) { return y(d.value); });
 
   var svg = d3.select("body").append("svg")
       .attr("width", width + margin.left + margin.right)
@@ -452,26 +374,26 @@ function multiline(data) {
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 
-  color.domain(d3.keys(data[0]).filter(function(key) { return key !== "date"; }));
+  color.domain(data.length);
 
-  data.forEach(function(d) {
-    d.date = parseDate(d.drinkDate);
-  });
+  // data.forEach(function(d) {
+  //   d.date = parseDate(d.drinkDate);
+  // });
 
-  var cities = color.domain().map(function(name) {
-    return {
-      name: name,
-      values: data.map(function(d) {
-        return {date: d.date, temperature: +d[name]};
-      })
-    };
-  });
+  // var cities = color.domain().map(function(name) {
+  //   return {
+  //     name: name,
+  //     values: data.map(function(d) {
+  //       return {date: d.date, temperature: +d[name]};
+  //     })
+  //   };
+  // });
 
-  x.domain(d3.extent(data, function(d) { return d.date; }));
-
+  //x.domain(d3.extent(data, function(d) { return d.date; }));
+  x.domain([parseDate("2010-06"),new Date()]);
   y.domain([
-    d3.min(cities, function(c) { return d3.min(c.values, function(v) { return v.temperature; }); }),
-    d3.max(cities, function(c) { return d3.max(c.values, function(v) { return v.temperature; }); })
+    0,
+    d3.max(data, function(d) { return d3.max(d.values, function(v) { return v.value; }); })
   ]);
 
   svg.append("g")
@@ -487,21 +409,21 @@ function multiline(data) {
       .attr("y", 6)
       .attr("dy", ".71em")
       .style("text-anchor", "end")
-      .text("Temperature (ºF)");
+      .text("Average");
 
-  var city = svg.selectAll(".city")
-      .data(cities)
+  var beer = svg.selectAll(".beer")
+      .data(data)
     .enter().append("g")
-      .attr("class", "city");
-
-  city.append("path")
+      .attr("class", "beer");
+    console.log(data);
+  beer.append("path")
       .attr("class", "line")
       .attr("d", function(d) { return line(d.values); })
-      .style("stroke", function(d) { return color(d.name); });
+      .style("stroke", function(d,i) { return color(i); });
 
-  city.append("text")
+  beer.append("text")
       .datum(function(d) { return {name: d.name, value: d.values[d.values.length - 1]}; })
-      .attr("transform", function(d) { return "translate(" + x(d.value.date) + "," + y(d.value.temperature) + ")"; })
+      .attr("transform", function(d) { return "translate(" + x(d.value.date) + "," + y(d.value.value) + ")"; })
       .attr("x", 3)
       .attr("dy", ".35em")
       .text(function(d) { return d.name; });
@@ -578,23 +500,33 @@ function timeseries(accessors) {
 //merger = average or count
 //data = array of data
 //for: http://bl.ocks.org/mbostock/3884955
-function multiTimeseries(data, merger) {
-  var zipped = [], temp, totalCount, totalRating, dataList;
+function multiTimeseries(data, names, valueType) {
+  var zipped = [], temp, totalCount, totalRating, dataList, value,
+      parseDate = d3.time.format("%Y-%m").parse;
+
   for (var i = 0; i < data.length; i++) {
-    dataList = data[i];
+    dataList = _.sortBy(data[i],function(d){return d.name});
     temp = [];
     totalCount = 0;
     totalRating = 0;
+
     for(var d in dataList) {
       totalCount += dataList[d].count;
       totalRating += dataList[d].ratingTotal;
+      if(valueType === "count")
+        value = totalCount
+      else
+        value = +(totalRating/totalCount).toFixed(2)
+
       temp.push({
-        'date':d,
-        'value': (totalRating/totalCount).toFixed(2)
+        'date':parseDate(dataList[d].name),
+        'value': value
       });
     }
+
+    temp = _.sortBy(temp, function(d){return d.date});
     zipped.push({
-      name: i,
+      name: names[i],
       values: temp
     });
   }
@@ -713,7 +645,7 @@ function aggregate(data, field){
     if(aggregated[d[field]]) {
       aggregated[d[field]].count++;
       aggregated[d[field]].ratingTotal += d.rating;
-      aggregated[d[field]].average = (aggregated[d[field]].ratingTotal/aggregated[d[field]].count).toFixed(2);
+      aggregated[d[field]].average = +(aggregated[d[field]].ratingTotal/aggregated[d[field]].count).toFixed(2);
     } else
       aggregated[d[field]] = {count: 1, ratingTotal: d.rating, average: d.rating.toFixed(2), name: d[field]};
   });
@@ -829,7 +761,7 @@ if(!window.beers)
     // vertbar('rating', 'style', 'IPA');
     window.beerIndex = index(window.beers);
     window.yr2013 = _.where(window.beers,{'drinkYear':2013});
-    timeseriesChart(["style.Abbey Dubbel"]);
+   // timeseriesChart(["style.Abbey Dubbel"]);
   });
 
 $(document).ready(function(){
