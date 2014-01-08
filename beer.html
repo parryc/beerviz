@@ -437,7 +437,7 @@ Data structures
 
 */
 
-var styleHierarchy = {
+window.styleHierarchy = {
   "All" : {
     "Ales" : {
       "Belgian" : {
@@ -445,8 +445,8 @@ var styleHierarchy = {
         "Belgian Ales" : ["Belgian Ale", "Belgian Strong Ale"]
       },
       "Saisons" : ["Saison"],
-      "German" : {
-        "Ales" : ["Altbier","Kölsch"],
+      "German Ales" : {
+        "Other German Ales" : ["Altbier","Kölsch"],
         "Bocks" : ["Doppelbock","Dunkler Bock","Heller Bock","Weizen Bock"]
       },
       "IPAs" : ["IPA","Double IPA","Black IPA"],
@@ -459,7 +459,7 @@ var styleHierarchy = {
     },
     "Wheat Beers" : ["Dunkelweizen","Hefeweizen","Kristallweizen","Wheat Ale","Gose","Belgian White"],
     "Lagers" : {
-        "German" : ["Dortmunder","Dunkel","Oktoberfest","Schwarzbier","Vienna","Zwickel"],
+        "German Lagers" : ["Dortmunder","Dunkel","Oktoberfest","Schwarzbier","Vienna","Zwickel"],
         "Pilseners" : ["Pilsener","Imperial Pilsener"],
         "Other Lagers" : ["American Dark Lager","Pale Lager","Malt Liquor","Specialty Grain"]
     },
@@ -491,6 +491,19 @@ function load(url, callback) {
     callback();
   })
 }
+
+/*
+
+var a = aggregate(beerIndex.styles("Belgian"),"drinkDate")
+var b = aggregate(beerIndex.styles("German Ales"),"drinkDate")
+var c = aggregate(beerIndex.styles("IPAs"),"drinkDate")
+var d = aggregate(beerIndex.styles("Other Ales"),"drinkDate")
+var e = aggregate(beerIndex.styles("Saisons"),"drinkDate")
+var f = [a,b,c,d,e]
+multiline(multiTimeseries(f, ["Belgian","German","IPAs","Other Ales","Saisons"],"count"))
+
+
+*/
 
 //_.toArray removes them from being ordered
 function timeseries(accessors) {
@@ -534,25 +547,38 @@ function multiTimeseries(data, names, valueType) {
   return zipped;
 }
 
+
+
 function jsonSearch(attribute, hierarchy) {
   var h = hierarchy,
       root = h.All,
-      result = [];
+      result;
 
   if(attribute === "All")
     return root;
-  else 
-    return _jsonSearch(attribute, root);
+  else {
+    result = _jsonSearch(attribute, root, []);
+    //bah, want to figure out why they all end in an undefined...
+    //if it returns an object, make sure you just return the object,
+    //but if it's an array, return everything.
+    console.log(result);
+    if(!_.isArray(result))
+      return result;
+    else if(typeof result.slice(0,1)[0] === 'object')
+      return  result.slice(0,1)[0];
+    else
+      return result.slice(0,this.length-1);
+  }
 }
 
-function _jsonSearch(attribute, hierarchy) {
-  var h = hierarchy, 
-      result = [];
+function _jsonSearch(attribute, hierarchy, result) {
+  var h = hierarchy;
+
   for(var key in h) {
     if(key === attribute)
       return h[key];
     else if(!_.isArray(h[key]))
-        result = _.union(result,_jsonSearch(attribute, h[key]));
+        result = _.union(result,_jsonSearch(attribute, h[key]), result);
   }
 
   return result;
@@ -565,9 +591,10 @@ function flatten(object) {
   else {
     for(var key in object) {
       if(_.isArray(object[key]))
-        result = _.union(result,object[key]);
+        return _.union(result,object[key]);
+        //result = _.union(result,object[key]);
       else
-        result = _.union(result,flatten(object[key]));
+        return _.union(result,flatten(object[key]));
     }
     return result;
   }
@@ -721,6 +748,10 @@ function index(data){
     if(!_.isArray(accessors))
       accessors = [accessors];
     return this._lookup(this.get(accessors));
+  }
+
+  index.styles = function(accessor) {
+    return this._lookup(getHierarchyDetails(accessor, window.styleHierarchy, "style", window.beerIndex))
   }
 
 
