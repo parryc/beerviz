@@ -437,6 +437,8 @@ Data structures
 
 */
 
+
+//To add, once I've had one: "Gueuze"
 window.styleHierarchy = {
   "All" : {
     "Ales" : {
@@ -450,7 +452,7 @@ window.styleHierarchy = {
         "Bocks" : ["Doppelbock","Dunkler Bock","Heller Bock","Weizen Bock"]
       },
       "IPAs" : ["IPA","Double IPA","Black IPA"],
-      "Other Ales" : {
+      "Others" : {
         "Pale Ales" : ["Old Ale","Bière de Garde","Amber Ale","Scotch Ale","Golden Ale"],
         "American Ales" : ["American Strong Ale", "American Pale Ale"],
         "English Ales" : ["English Pale Ale","Bitter","Premium Bitter","English Strong Ale"],
@@ -460,12 +462,12 @@ window.styleHierarchy = {
     "Wheat Beers" : ["Dunkelweizen","Hefeweizen","Kristallweizen","Wheat Ale","Gose","Belgian White"],
     "Lagers" : {
         "German Lagers" : ["Dortmunder","Dunkel","Oktoberfest","Schwarzbier","Vienna","Zwickel"],
-        "Pilseners" : ["Pilsener","Imperial Pilsener"],
+        "Pilseners" : ["Pilsener","Imperial Pils"],
         "Other Lagers" : ["American Dark Lager","Pale Lager","Malt Liquor","Specialty Grain"]
     },
     "Stouts/Porters" : ["Baltic Porter","Dry Stout","Foreign Stout","Imperial Stout","Smoked","Strong Porter","Porter","Sweet Stout","Stout"],
     "Flavored" : ["Spice","Fruit Beer"],
-    "Lambics" : ["Lambic","Gueze","Brown Sour","Sour"]
+    "Lambics" : ["Lambic","Brown Sour","Sour"]
   }
 };
 
@@ -561,49 +563,78 @@ function jsonSearch(attribute, hierarchy) {
     //bah, want to figure out why they all end in an undefined...
     //if it returns an object, make sure you just return the object,
     //but if it's an array, return everything.
-    console.log(result);
+    // console.log(result);
     if(!_.isArray(result))
       return result;
-    else if(typeof result.slice(0,1)[0] === 'object')
-      return  result.slice(0,1)[0];
-    else
-      return result.slice(0,this.length-1);
+    else// if(typeof result.slice(0,1)[0] === 'object')
+      return  _removeUndefined(result);
+    // else
+    //   return result.slice(0,this.length-1);
   }
 }
 
 function _jsonSearch(attribute, hierarchy, result) {
   var h = hierarchy;
-
+  // console.log(result);
   for(var key in h) {
-    if(key === attribute)
-      return h[key];
-    else if(!_.isArray(h[key]))
-        result = _.union(result,_jsonSearch(attribute, h[key]), result);
-  }
+    // console.log(key);
+    if(key === attribute) {
 
+      return h[key];
+    } else if(!_.isArray(h[key])) {
+      // console.log(h[key]);
+      result = _.union(result,_jsonSearch(attribute, h[key]), result);
+    }
+  }
+  // console.log(result);
   return result;
+}
+
+function _removeUndefined(array) {
+  var clean = [];
+  for(var i = 0; i < array.length; i++) {
+    if(typeof array[i] !== 'undefined') 
+      clean.push(array[i])
+  }
+  return clean;
 }
 
 function flatten(object) {
   var result = [];
-  if(_.isArray(object))
-    return object;
-  else {
-    for(var key in object) {
+  // console.log("FLATTENING");
+  if(_.isArray(object)) {
+    for(var i = 0; i < object.length; i++) {
+      if(_.isString(object[i]))
+        result = _.union(result,object[i])
+      else
+        result = _.union(result, _flatten(object));
+    }
+
+    return result;
+  } else {
+
+    return _flatten(object);
+  }
+}
+
+function _flatten(object) {
+  var result = [];
+  for(var key in object) {
       if(_.isArray(object[key]))
-        return _.union(result,object[key]);
+        result = _.union(result,object[key]);
         //result = _.union(result,object[key]);
       else
-        return _.union(result,flatten(object[key]));
+        result = _.union(result,flatten(object[key]));
     }
     return result;
-  }
 }
 
 function getHierarchyDetails(attribute, hierarchy, type, list) {
   var search = flatten(jsonSearch(attribute,hierarchy)),
       result = [];
 
+  // console.log("SEARCH");
+   console.log(search);
   if(!_.isEmpty(search)) {
     for (var i = 0; i < search.length; i++) {
       result = _.union(result, list[type][search[i]]);
@@ -668,6 +699,7 @@ Finds the count and total ratings of topic
 */
 function aggregate(data, field){
   var aggregated = {};
+  console.log(data);
   data.forEach(function(d){
     if(aggregated[d[field]]) {
       aggregated[d[field]].count++;
