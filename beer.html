@@ -556,6 +556,19 @@ function jsonSearch(attribute, hierarchy) {
       root = h.All,
       result;
 
+  var _jsonSearch = function(attribute, hierarchy, result) {
+    var h = hierarchy;
+    for(var key in h) {
+      if(key === attribute) {
+
+        return h[key];
+      } else if(!_.isArray(h[key])) {
+        result = _.union(result,_jsonSearch(attribute, h[key]), result);
+      }
+    }
+    return result;
+  }
+
   if(attribute === "All")
     return root;
   else {
@@ -566,29 +579,12 @@ function jsonSearch(attribute, hierarchy) {
     // console.log(result);
     if(!_.isArray(result))
       return result;
-    else// if(typeof result.slice(0,1)[0] === 'object')
+    else
       return  _removeUndefined(result);
-    // else
-    //   return result.slice(0,this.length-1);
   }
 }
 
-function _jsonSearch(attribute, hierarchy, result) {
-  var h = hierarchy;
-  // console.log(result);
-  for(var key in h) {
-    // console.log(key);
-    if(key === attribute) {
 
-      return h[key];
-    } else if(!_.isArray(h[key])) {
-      // console.log(h[key]);
-      result = _.union(result,_jsonSearch(attribute, h[key]), result);
-    }
-  }
-  // console.log(result);
-  return result;
-}
 
 function _removeUndefined(array) {
   var clean = [];
@@ -600,7 +596,17 @@ function _removeUndefined(array) {
 }
 
 function flatten(object) {
-  var result = [];
+  var result = [],
+      _flatten = function(object) {
+        var result = [];
+        for(var key in object) {
+            if(_.isArray(object[key]))
+              result = _.union(result,object[key]);
+            else
+              result = _.union(result,flatten(object[key]));
+          }
+          return result;
+      };
   // console.log("FLATTENING");
   if(_.isArray(object)) {
     for(var i = 0; i < object.length; i++) {
@@ -617,17 +623,6 @@ function flatten(object) {
   }
 }
 
-function _flatten(object) {
-  var result = [];
-  for(var key in object) {
-      if(_.isArray(object[key]))
-        result = _.union(result,object[key]);
-        //result = _.union(result,object[key]);
-      else
-        result = _.union(result,flatten(object[key]));
-    }
-    return result;
-}
 
 function getHierarchyDetails(attribute, hierarchy, type, list) {
   var search = flatten(jsonSearch(attribute,hierarchy)),
