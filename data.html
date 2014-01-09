@@ -30,6 +30,11 @@ path {
 
 </style>
 <body>
+  <input type="radio" value="count,Counts" name="type"/> Count <br/>
+  <input type="radio" value="average,Averages" name="type"/> Average <br/>
+  <div id="list">
+  </div>
+
 </body>
 <script src="js/libs/d3.js"></script>
 <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
@@ -37,3 +42,37 @@ path {
 <script src="js/libs/underscore.js"></script>
 <script src="js/charts.js"></script>
 <script src="js/drink.js"></script>
+<script>
+$(document).ready(function(){
+  var styles = beer.hierarchies.print("style");
+
+  for (var i = 0; i < styles.length; i++) {
+    $('#list').append('<input type="checkbox" name="styles[]" value="'+styles[i].replace(/ > /g,'')+'"/> ' + styles[i] + '<br/>');
+  }
+
+  $('input[type=checkbox],input[type=radio]').on("change",function(){
+    var values, 
+        toggleData = $('input[name=type]:checked').val().split(','),
+        type = toggleData[0]
+        yAxis = toggleData[1];
+    $('svg').remove();
+    values = $('input[type=checkbox]:checked').map(function(){
+      return $(this).val();
+    }).get();
+
+    console.log(values);
+    multiline(beer.formatMultiseries(values,"styles",type),yAxis);
+  });
+
+  function load(url, callback) {
+    d3.json(url,function(error, data){
+      callback(data);
+    });
+  }
+  load('beer.json', function(beers){
+    beer.init(beers);
+    multiline(beer.formatMultiseries(["Ales","Lagers"],"styles","count"),"Counts");
+  });
+
+});
+</script>

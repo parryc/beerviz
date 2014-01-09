@@ -37,6 +37,38 @@
             "Flavored" : ["Spice","Fruit Beer"],
             "Lambics" : ["Lambic","Brown Sour","Sour"]
           }
+        },
+
+        print: function(h) {
+          var _search = function(level, hierarchy, result) {
+            var h = hierarchy, output = "";
+            for(var key in h) {
+              output = "";
+              for(var i = 0; i < level; i++) {
+                output += " > ";
+              }
+              output += key;
+              result.push(output);
+
+              if(!_.isArray(h[key])) {
+                result = _.union(result,_search(level+1, h[key], result));
+              } else {
+                for(var j = 0; j < h[key].length; j++) {
+                  output = "";
+                  for(var i = 0; i < level+1; i++) {
+                    output += " > ";
+                  }
+                  output += h[key][j];
+                  result.push(output);
+                }
+
+              }
+            }
+
+            return result;
+          };
+
+          return(_search(0, beer.hierarchies[h], []));
         }
       },
 
@@ -313,9 +345,9 @@
   }
 
   root.beer = beerMe();
-  load('beer.json', function(beers){
-    root.beer.init(beers);
-    multiline(root.beer.formatMultiseries(["Ales","Lagers"],"styles","count"),"Counts");
-  });
+  // load('beer.json', function(beers){
+  //   root.beer.init(beers);
+  //   multiline(root.beer.formatMultiseries(["Ales","Lagers"],"styles","count"),"Counts");
+  // });
 //  root.beer.init(options);
 })(this)
