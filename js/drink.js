@@ -45,7 +45,7 @@
             for(var key in h) {
               output = "";
               for(var i = 0; i < level; i++) {
-                output += " > ";
+                output += ">";
               }
               output += key;
               result.push(output);
@@ -56,7 +56,7 @@
                 for(var j = 0; j < h[key].length; j++) {
                   output = "";
                   for(var i = 0; i < level+1; i++) {
-                    output += " > ";
+                    output += ">";
                   }
                   output += h[key][j];
                   result.push(output);
@@ -68,7 +68,7 @@
             return result;
           };
 
-          return(_search(0, beer.hierarchies[h], []));
+          return(_search(1, beer.hierarchies[h], []));
         }
       },
 

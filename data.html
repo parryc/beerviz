@@ -28,10 +28,25 @@ path {
 }
 
 
+.overlay {
+  fill: none;
+  pointer-events: all;
+}
+
+.focus circle {
+  fill: none;
+  stroke: steelblue;
+}
+
+.x.axis path {
+  display: none;
+}
+
 </style>
 <body>
+  Click to drop down style levels.  Click checkbox to toggle. <br/>
   <input type="radio" value="count,Counts" name="type"/> Count <br/>
-  <input type="radio" value="average,Averages" name="type"/> Average <br/>
+  <input type="radio" value="average,Averages" name="type" checked/> Average <br/>
   <div id="list">
   </div>
 
@@ -44,11 +59,43 @@ path {
 <script src="js/drink.js"></script>
 <script>
 $(document).ready(function(){
-  var styles = beer.hierarchies.print("style");
+  var styles = beer.hierarchies.print("style"), level, count, countNext, startTags = "", endTags = "", menu = "";
 
   for (var i = 0; i < styles.length; i++) {
-    $('#list').append('<input type="checkbox" name="styles[]" value="'+styles[i].replace(/ > /g,'')+'"/> ' + styles[i] + '<br/>');
+    startTags = ""; endTags = ""; hide = "";
+    count = styles[i].match(/>/g).length;
+    if(i+1 < styles.length)
+      countNext = styles[i+1].match(/>/g).length;
+    else
+      countNext = 0;
+
+    if(count === 3)
+      hide = " style='display:none' ";
+
+    if(countNext > count) {
+      startTags = "<div" + hide + ">";
+      endTags = "";
+    } else if (countNext === count){
+      startTags = "<div" + hide + ">";
+      endTags = "</div>";
+    } else {
+      startTags = "<div" + hide + ">";
+      for (var j = 0; j < (count-countNext)+1; j++) {
+        endTags += "</div>";
+      }
+    }
+
+
+ //   startTags = ""; endTags = "";
+   // for (var j = 0; j < count; j++) {
+   //   startTags += "<div>";
+  //    endTags += "</div>";
+  //  }
+    menu += startTags + '<input type="checkbox" name="styles[]" value="'+styles[i].replace(/>/g,'')+'"/> ' + '<label>' + styles[i] + " " + count + " " + countNext + " </label>" + endTags;
   }
+
+  $('#list').append(menu);
+  $('label').on("click",function() { $(this).parent().find('div').toggle() });
 
   $('input[type=checkbox],input[type=radio]').on("change",function(){
     var values, 

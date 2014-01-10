@@ -35,21 +35,8 @@ function multiline(data,yAxisLabel) {
 
   color.domain(data.length);
 
-  // data.forEach(function(d) {
-  //   d.date = parseDate(d.drinkDate);
-  // });
-
-  // var cities = color.domain().map(function(name) {
-  //   return {
-  //     name: name,
-  //     values: data.map(function(d) {
-  //       return {date: d.date, temperature: +d[name]};
-  //     })
-  //   };
-  // });
-
-  //x.domain(d3.extent(data, function(d) { return d.date; }));
   x.domain([parseDate("2010-06"),new Date()]);
+  window.xex = x;
   y.domain([
     0,
     d3.max(data, function(d) { return d3.max(d.values, function(v) { return v.value; }); })
@@ -86,5 +73,32 @@ function multiline(data,yAxisLabel) {
       .attr("x", 3)
       .attr("dy", ".35em")
       .text(function(d) { return d.name; });
+
+  //http://bl.ocks.org/mbostock/3902569
+  // var focus = svg.append("g")
+  // .attr("class", "focus")
+  // .style("display", "none");
+
+  // focus.append("circle")
+  //     .attr("r", 4.5);
+
+  // focus.append("text")
+  //     .attr("x", 9)
+  //     .attr("dy", ".35em");
+
+  // svg.append("rect")
+  //     .attr("class", "overlay")
+  //     .attr("width", width)
+  //     .attr("height", height)
+  //     .on("mouseover", function() { focus.style("display", null); })
+  //     .on("mouseout", function() { focus.style("display", "none"); })
+  //     .on("mousemove", mousemove);
+
+  // function mousemove() {
+
+  // focus.attr("transform", "translate(" + d3.mouse(this)[0] + "," + d3.mouse(this)[1] + ")");
+  // focus.select("text").text(d3.time.format('%Y-%m')(x.invert(d3.mouse(this)[0])));
+      
+  // }
 
 }
