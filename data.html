@@ -10,6 +10,11 @@ svg {
   font: 10px sans-serif;
 }
 
+#list {
+  float: left;
+  width: 25%;
+}
+
 path {
   fill: none;
 }
@@ -47,7 +52,11 @@ path {
   Click to drop down style levels.  Click checkbox to toggle. <br/>
   <input type="radio" value="count,Counts" name="type"/> Count <br/>
   <input type="radio" value="average,Averages" name="type" checked/> Average <br/>
-  <div id="list">
+  <div>
+    <div id="list">
+    </div>
+    <div id="svg">
+    </div>
   </div>
 
 </body>
@@ -86,12 +95,10 @@ $(document).ready(function(){
     }
 
 
- //   startTags = ""; endTags = "";
-   // for (var j = 0; j < count; j++) {
-   //   startTags += "<div>";
-  //    endTags += "</div>";
-  //  }
-    menu += startTags + '<input type="checkbox" name="styles[]" value="'+styles[i].replace(/>/g,'')+'"/> ' + '<label>' + styles[i] + " " + count + " " + countNext + " </label>" + endTags;
+    padding = (count-1)*10;
+    cleaned = styles[i].replace(/>/g,'');
+
+    menu += startTags + '<input type="checkbox" name="styles[]" value="'+cleaned+'"/> ' + '<label style="padding-left: '+padding+'px;">' + cleaned + "</label>" + endTags;
   }
 
   $('#list').append(menu);
@@ -107,7 +114,7 @@ $(document).ready(function(){
       return $(this).val();
     }).get();
 
-    console.log(values);
+
     multiline(beer.formatMultiseries(values,"styles",type),yAxis);
   });
 
