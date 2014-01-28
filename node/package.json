@@ -6,7 +6,10 @@
     "jade": "0.27.x",
     "stylus": "0.30.x",
     "socket.io": "0.9.11",
-    "mongoose": "3.4.0"
+    "mongoose": "3.4.0",
+    "huntsman": "0.2.6",
+    "cheerio": "*",
+    "request": "*"
   },
   "engines": {
     "node": "0.8.x",

@@ -7,7 +7,16 @@ var app = express(),
 	server = http.createServer(app),
 	io = require('socket.io').listen(server),
 	jade = require('jade'),
-	mongoose = require('mongoose');
+	mongoose = require('mongoose'),
+	huntsman = require('huntsman'),
+	ba = require('./beer-advocate-api.js');
+
+var spider = huntsman.spider({
+  throttle: 5
+});
+spider.extensions = [
+  huntsman.extension('cheerio')
+];
 
 
 //Reduce logging
@@ -165,6 +174,48 @@ app.post('/add',express.bodyParser(),function(req, res){
 			res.render('add.jade',{});
 	});
 
+});
+
+
+/* 
+ Star the crawl
+*/
+
+app.get('/crawl',function(req, res){
+	Beer.find({}).exec(function(err,beers){
+		var beer, topChoice, out = [];
+		beers.forEach(function(beer, index, arr){
+			ba.beerSearch(beer.brewery+" "+beer.name, function(baResponse){
+				// console.log(baResponse);
+				topChoice = baResponse[0];
+				if(topChoice === undefined || !topChoice) {
+					console.log('FAIL: ' + beer.brewery+" "+beer.name);
+					out.push({
+						'id':beer._id,
+						'in_db':beer.brewery+" "+beer.name
+					});
+				} else {
+					ba.beerPage(topChoice.beer_url, function(response){
+						console.log((beers.length-index) + " beers left on the wall");
+						// console.log(response);
+						// console.log("Looked for: "+beer.brewery+" "+beer.name+" and got "+response[0].brewery_name+" "+response[0].beer_name+ "("+response.beer_abv+")");
+						out.push({
+							'id':beer._id,
+							'in_db':beer.brewery+" "+beer.name,
+							'res_name':response[0].brewery_name,
+							'res_brwry':response[0].beer_name,
+							'abv':response[0].beer_abv.replace('%','')
+						});
+						if(index === beers.length-1) {
+							console.log(out);
+							// console.log("sent");
+							res.send(out);
+						}
+					});
+				}
+			}, false, true);
+		});
+	});
 });
 
 //SERVE THE SHIT!
