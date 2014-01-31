@@ -83,9 +83,10 @@
           "drinkDate": {},
           "drinkYear": {},
           "rating": {},
-          "style": {}
+          "style": {},
+          "abv": {}
         },
-        indexes = ['brewery','country','drinkLocationCity','drinkLocationCountry','drinkDate','drinkYear','rating','style'],
+        indexes = ['brewery','country','drinkLocationCity','drinkLocationCountry','drinkDate','drinkYear','rating','style','abv'],
         cat, j;
 
         //Create index list for each attribute in indexes array
