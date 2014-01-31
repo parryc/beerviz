@@ -37,3 +37,8 @@ block content
 						| ADD!
 					else
 						| #{b.drinkYear}
+				td.abv(id="abv_#{b._id}")
+					if (!b.abv)
+						| ADD!
+					else
+						| #{b.abv}

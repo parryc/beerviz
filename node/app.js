@@ -62,7 +62,8 @@ var beerSchema = new Schema({
 	drinkLocationCity: String,
 	drinkLocationCountry: String,
 	drinkMonth: Number,
-	drinkYear: Number
+	drinkYear: Number,
+	abv: Number
 });
 
 var Beer = mongoose.model('Beer',beerSchema);
@@ -165,7 +166,8 @@ app.post('/add',express.bodyParser(),function(req, res){
 		drinkLocationCity: req.body.drinkLocationCity,
 		drinkLocationCountry: req.body.drinkLocationCountry,
 		drinkMonth: req.body.drinkMonth,
-		drinkYear: req.body.drinkYear
+		drinkYear: req.body.drinkYear,
+		abv: req.body.abv
 	});
 	beer.save(function(err){
 		if(err)
@@ -175,6 +177,7 @@ app.post('/add',express.bodyParser(),function(req, res){
 	});
 
 });
+
 
 
 /* 

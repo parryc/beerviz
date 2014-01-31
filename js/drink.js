@@ -35,7 +35,7 @@
             },
             "Stouts/Porters" : ["Baltic Porter","Dry Stout","Foreign Stout","Imperial Stout","Smoked","Strong Porter","Porter","Sweet Stout","Stout"],
             "Flavored" : ["Spice","Fruit Beer"],
-            "Lambics" : ["Lambic","Brown Sour","Sour"]
+            "Lambics" : ["Lambic","Brown Sour","Sour","Gueuze"]
           }
         },
 
