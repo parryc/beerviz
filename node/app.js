@@ -5,7 +5,6 @@ var express = require('express');
 var app = express(),
 	http = require('http'),
 	server = http.createServer(app),
-	io = require('socket.io').listen(server),
 	jade = require('jade'),
 	mongoose = require('mongoose'),
 	huntsman = require('huntsman'),
@@ -18,9 +17,6 @@ spider.extensions = [
   huntsman.extension('cheerio')
 ];
 
-
-//Reduce logging
-io.set('log level',1);
 
 app.configure(function(){
   app.set('views', __dirname + '/views');
@@ -78,6 +74,8 @@ Display
 ********************/
 app.get('/', function(req, res) {
 	Beer.find({}).sort({_id:-1}).limit(5).exec(function(err,beers){
+		if(err)
+			console.log(err);
 		res.render('beer.jade', {recent: beers});
 	});
 });
