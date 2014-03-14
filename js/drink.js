@@ -6,6 +6,9 @@
   function beerMe() {
     return {
 
+      groups: {
+        abv: ["0-5","5-7","7-9","9-11","11-100"]
+      },
       hierarchies: {
         style: {
           "All" : {
@@ -262,6 +265,35 @@
       },
 
       /*
+        Returns indexes based on the groups.
+        Currently supports ranged groups (indicated by a single -).
+        This is also inefficient. Whatever.
+      */
+      group: function(group) {
+        var groupArr = this.groups[group],
+            beers = this.index[group],
+            groups = {},
+            range, start, end;
+
+        for (var i = groupArr.length - 1; i >= 0; i--) {
+          range = groupArr[i].split('-');
+          groups[range] = [];
+          start = range[0];
+          end = range[1];
+          for(var rating in beers) {
+            if(start <= +rating && +rating < end) {
+              if(!groups[range])
+                groups[range] = beers[rating];
+              else
+                groups[range] = _.union(groups[range],beers[rating]);
+            }
+          }
+        }
+
+        return groups;
+      },
+
+      /*
         Lump information by a specific field.
         Includes running count and average information
       */
@@ -272,9 +304,17 @@
           if(aggregated[d[field]]) {
             aggregated[d[field]].count++;
             aggregated[d[field]].ratingTotal += d.rating;
+            aggregated[d[field]].abvTotal += d.abv;
             aggregated[d[field]].average = +(aggregated[d[field]].ratingTotal/aggregated[d[field]].count).toFixed(2);
+            aggregated[d[field]].averageAbv = +(aggregated[d[field]].abvTotal/aggregated[d[field]].count).toFixed(2);
           } else
-            aggregated[d[field]] = {count: 1, ratingTotal: d.rating, average: d.rating.toFixed(2), name: d[field]};
+            aggregated[d[field]] = {
+              count: 1,
+              ratingTotal: d.rating,
+              average: d.rating.toFixed(2),
+              abvTotal: d.abv,
+              averageAbv: d.abv.toFixed(2),
+              name: d[field]};
         });
 
         return aggregated;
@@ -310,16 +350,20 @@
         for (var i = 0; i < seriesList.length; i++) {
           dataList = _.sortBy(seriesList[i],function(d){return d.name});
           temp = [];
+          totalAbv = 0;
           totalCount = 0;
           totalRating = 0;
 
           for(var d in dataList) {
+            totalAbv += dataList[d].abvTotal;
             totalCount += dataList[d].count;
             totalRating += dataList[d].ratingTotal;
             if(yAxis === "count")
-              value = totalCount
+              value = totalCount;
+            else if(yAxis === "abv")
+              value = +(totalAbv/totalCount).toFixed(2);
             else
-              value = +(totalRating/totalCount).toFixed(2)
+              value = +(totalRating/totalCount).toFixed(2);
 
             temp.push({
               'date':parseDate(dataList[d].name),
@@ -327,7 +371,7 @@
             });
           }
 
-          temp = _.sortBy(temp, function(d){return d.date});
+          temp = _.sortBy(temp, function(d){return d.date;});
           zipped.push({
             name: labels[i],
             values: temp
@@ -336,7 +380,7 @@
 
         return zipped;
       }
-    } 
+    };
   }
 
   function load(url, callback) {
