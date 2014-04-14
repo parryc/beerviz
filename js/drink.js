@@ -26,7 +26,7 @@
               "Others" : {
                 "Pale Ales" : ["Old Ale","Bière de Garde","Amber Ale","Scotch Ale","Golden Ale"],
                 "American Ales" : ["American Strong Ale", "American Pale Ale"],
-                "English Ales" : ["English Pale Ale","Bitter","Premium Bitter","English Strong Ale"],
+                "English Ales" : ["English Pale Ale","Bitter","Premium Bitter","English Strong Ale","Mild Ale"],
                 "Other Ales" : ["Barley Wine","Brown Ale","California Common","Cream Ale","Irish Ale","Scottish Ale","Traditional Ale"]
               }
             },
@@ -41,7 +41,15 @@
             "Lambics" : ["Lambic","Brown Sour","Sour","Gueuze"]
           }
         },
-
+        rating: {
+          "All" : {
+            "Great" : ['4','4.1','4.2','4.3','4.4','4.5','4.6','4.7','4.8','4.9'],
+            "Good" : ['3','3.1','3.2','3.3','3.4','3.5','3.6','3.7','3.8','3.9'],
+            "Ok" : ['2','2.1','2.2','2.3','2.4','2.5','2.6','2.7','2.8','2.9'],
+            "Meh" : ['1','1.1','1.2','1.3','1.4','1.5','1.6','1.7','1.8','1.9'],
+            "Bad" : ['0','0.1','0.2','0.3','0.4','0.5','0.6','0.7','0.8','0.9']
+          }
+        },
         print: function(h) {
           var _search = function(level, hierarchy, result) {
             var h = hierarchy, output = "";
@@ -151,9 +159,11 @@
         Return Beer objects from a list of indexes
       */
       lookup: function(indexList){
-        var output = [];
+        var output = [], list;
         for (var i = 0; i < indexList.length; i++) {
-          output.push(this.beers[indexList[i]]);
+          list = this.beers[indexList[i]];
+          if(list !== undefined)
+            output.push(list);
         }
         return output;
       },
@@ -217,7 +227,7 @@
         if(_.isArray(object)) {
           for(var i = 0; i < object.length; i++) {
             if(_.isString(object[i]))
-              result = _.union(result,object[i])
+              result = _.union(result,object[i]);
             else
               result = _.union(result, this._flatten(object));
           }
@@ -262,6 +272,13 @@
       */
       styles: function(accessor) {
         return this.lookup(this.getHierarchyDetails(accessor, this.hierarchies.style, "style"));
+      },
+
+      /*
+        Wrapper to get a list of Beer objects from the rating hierarchy.
+      */
+      ratings: function(accessor) {
+        return this.lookup(this.getHierarchyDetails(accessor, this.hierarchies.rating, "rating"));
       },
 
       /*
