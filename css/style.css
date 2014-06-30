@@ -6,6 +6,8 @@ body,aside {
 	padding: 10px;
 }
 
+
+
 table {
 	width: 100%;
 }
@@ -16,6 +18,7 @@ th {
 
 li {
 	display: block;
+	background: #FFFAF0;
 }
 
 #container {
@@ -30,6 +33,12 @@ li {
 
 #full-beer-list {
 	margin-left: -40px;
+}
+
+.beer {
+	margin-top: 5px;
+	margin-bottom: 5px;
+	padding: 15px;
 }
 
 .centered {
@@ -126,11 +135,23 @@ li {
 	background: #C9E1F7;
 }
 
+.middle {
+	font-size: 1.4em;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+.pint {
+	height: 25px;
+}
+
 .rating {
 	text-align: center;
 	width: 100px;
 	margin-right: 5px;
 	display: inline-block;
+	background: black;
+	color: white;
 }
 
 .style {

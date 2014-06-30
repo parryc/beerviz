@@ -6,8 +6,14 @@ colorscale.create([
         {'value':5,'color':{'r':110,'g':176,'b':234}}
         ], "beer");
 
+
+colorscale.create([
+        {'value':0, 'color':{'r':229,'g':224,'b':215}},
+        {'value':5,'color':{'r':0,'g':0,'b':0}}
+        ], "beer2");
+
 Handlebars.registerHelper('color', function(rating) {
-  return colorscale.beer.pick(rating);
+  return colorscale.beer2.pick(rating);
 });
 Handlebars.registerHelper('wordRating', function(rating) {
   var parts = (""+rating).split('.');
@@ -32,6 +38,7 @@ Handlebars.registerHelper('date', function(drinkMonth, drinkYear){
   var months = "Jan_Feb_Mar_Apr_May_Jun_Jul_Aug_Sep_Oct_Nov_Dec".split("_");
   return months[parseInt(drinkMonth,10)-1]+", "+drinkYear;
 });
+
 
 
 d3.json("beer.json", function(data) {
