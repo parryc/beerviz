@@ -15,6 +15,25 @@ colorscale.create([
 Handlebars.registerHelper('color', function(rating) {
   return colorscale.beer2.pick(rating);
 });
+
+Handlebars.registerHelper('rating2', function(rating) {
+  var parts = (""+rating).split('.');
+  if(parts[0] === "0")
+    return "bad";
+  if(parts[0] === "1")
+    return "meh";
+  if(parts[0] === "2")
+    return "ok";
+  if(parts[0] === "3")
+    return "good";
+  if(parts[0] === "4")
+    return "great";
+});
+
+Handlebars.registerHelper('twoDigitYear', function(year){
+  return (""+year).substr(2);
+});
+
 Handlebars.registerHelper('wordRating', function(rating) {
   var parts = (""+rating).split('.');
   if(parts[1] === undefined)
@@ -39,6 +58,11 @@ Handlebars.registerHelper('date', function(drinkMonth, drinkYear){
   return months[parseInt(drinkMonth,10)-1]+", "+drinkYear;
 });
 
+Handlebars.registerHelper('month', function(drinkMonth){
+  var months = "Jan_Feb_Mar_Apr_May_Jun_Jul_Aug_Sep_Oct_Nov_Dec".split("_");
+  return months[parseInt(drinkMonth,10)-1];
+});
+
 
 
 d3.json("beer.json", function(data) {
@@ -54,7 +78,7 @@ d3.json("beer.json", function(data) {
   },
   options = {
     valueNames: [ 'name', 'brewery', 'rating', 'date', 'country', 'location-country', 'style' ],
-    page: 1000
+    page: 10
   },
   beerList = new List('beer-list-container', options);
 });

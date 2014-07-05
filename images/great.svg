@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="126px" height="126px" viewBox="0 0 126 126" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <title>Slice 1</title>
+    <description>Created with Sketch (http://www.bohemiancoding.com/sketch)</description>
+    <defs></defs>
+    <g id="Page 1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <path d="M63,123 C96.13704,123 123,96.13704 123,63 C123,29.86296 96.13704,3 63,3 C29.86296,3 3,29.86296 3,63 C3,96.13704 29.86296,123 63,123 Z M63,123" id="Oval 1" stroke="#000000" stroke-width="5" fill="#AADF74"></path>
+        <path d="M62.4999992,82.25 L40.4580548,93.8381386 L44.6676906,69.2940694 L26.8353804,51.9118635 L51.4790301,48.3309288 L62.5000004,26 L73.5209775,48.3309343 L98.1646254,51.9118814 L80.3323079,69.294074 L84.5419445,93.8381391 L62.4999992,82.25 Z M62.4999992,82.25" id="Star 1" stroke="#000000" stroke-width="5" fill="#000000"></path>
+    </g>
+</svg>
