@@ -1,15 +1,17 @@
 {{#each .}}
-<li class="row-fluid beer">
+<div class="beer">
+  <aside>
+    <div class="rating"><span class="hidden">{{rating}}.0</span>{{rating-symbol rating}}</div>
+    <div class="country-pic"><img src="images/{{country}}.png"/><span class="hidden country">{{country}}</span></div>
+    <div class="style" style="background: {{beerColor style}}"></div>
+  </aside>
   <div class="top">
     <span class="brewery">{{brewery}}</span> <span class="name">{{name}}</span>
   </div>
-  <div class="middle">
-    <span class="rating"><span class="hidden">{{rating}}.0</span><img class="rating-image" src="images/{{rating2 rating}}.svg"/></span>
-    <div class="circle country-pic" style="background-image: url(images/{{country}}.png"><span class="hidden country">{{country}}</span></div>
-    <span class="style">{{style}}</span>
+  <!--<div class="middle">
     <div class="circle"><span class="month">{{month drinkMonth}}</span><br/><span class="year">{{drinkYear}}</span></div>
-    <div class="circle">{{style}}</div>
-  </div>
+    <div class="circle style">{{style}}</div>
+  </div>-->
   <div class="bottom">
     <span class="date-small">{{drinkMonth}}/{{drinkYear}}</span><span class="date"><span class="hidden">{{drinkYear}}-{{drinkMonth}}</span>{{date drinkMonth drinkYear}}</span>
     <span class="location">
@@ -20,5 +22,5 @@
       </span>
     </span>
   </div>
-</li>
+</div>
 {{/each}}

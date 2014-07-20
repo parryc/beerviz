@@ -1,3 +1,8 @@
+html {
+	background: rgb(81,81,81);
+	color: rgb(236,236,236);
+}
+
 p a, footer a {
 	color: rgb(111,176,235);
 }
@@ -14,11 +19,6 @@ table {
 
 th {
 	min-width: 100px;
-}
-
-li {
-	display: block;
-	background: #FFFAF0;
 }
 
 /* Style circles */
@@ -64,8 +64,10 @@ li {
 }
 
 #container {
-	width: 70%;
+	width: 100%;
 	margin: 0 auto;
+	color: rgb(49,49,49);
+	background: rgb(236,236,236);
 }
 
 #sorters span, #sorters img {
@@ -74,13 +76,26 @@ li {
 
 
 #full-beer-list {
-	margin-left: -40px;
+	padding-left: 6%;
 }
 
+
 .beer {
-	margin-top: 5px;
-	margin-bottom: 5px;
 	padding: 15px;
+	border: 4px solid black;
+	background: white;
+	display: inline-block;
+	width: 350px;
+	margin-right: 1.6667%;
+	margin-bottom: 1.6667%;
+	height: 100px;
+	vertical-align: top;
+}
+
+.beer aside {
+	float: left;
+	margin-top: -7px;
+	text-align: center;
 }
 
 .centered {
@@ -90,7 +105,7 @@ li {
 	text-align: center;
 }
 
-.circle {
+/*.circle {
 	-moz-border-radius: 50px;
 	-webkit-border-radius: 50px;
 	-o-border-radius: 50px;
@@ -106,7 +121,7 @@ li {
 	text-align: center;
 	float: left;
 	margin-left: 10px;
-}
+}*/
 
 .country, .country-pic {
 	background-size: 55px;
@@ -120,6 +135,10 @@ li {
 	-khtml-border-radius: 50px;
 	border-radius: 50px;*/
 /*	margin-top: -4px;*/
+}
+
+.country-pic img {
+	height: 1.3em;
 }
 
 .category {
@@ -216,15 +235,15 @@ li {
 
 .rating {
 	text-align: center;
-	/*width: 100px;*/
-	margin-right: 5px;
-	display: inline-block;
-	/*background: black;*/
-	/*color: white;*/
+	font-size: 1.3em;
 }
 
 .rating-image {
 	height: 50px;
+}
+
+.red {
+	color: rgb(232,100,111);
 }
 
 .style {
@@ -241,6 +260,22 @@ li {
 
 .sub-category:hover {
 	background: #ddd;
+}
+
+.style {
+	-moz-border-radius: 50px;
+	-webkit-border-radius: 50px;
+	-o-border-radius: 50px;
+	-ms-border-radius: 50px;
+	-khtml-border-radius: 50px;
+	border-radius: 50px;
+	border: black solid 2px;
+	width: 20px;
+	height: 20px;
+}
+
+.top {
+	font-size: 1.4em;
 }
 
 

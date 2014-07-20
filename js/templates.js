@@ -8,7 +8,23 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 function program1(depth0,data) {
   
   var buffer = "", stack1, helper, options;
-  buffer += "\n<li class=\"row-fluid beer\">\n  <div class=\"top\">\n    <span class=\"brewery\">";
+  buffer += "\n<div class=\"beer\">\n  <aside>\n    <div class=\"rating\"><span class=\"hidden\">";
+  if (helper = helpers.rating) { stack1 = helper.call(depth0, {hash:{},data:data}); }
+  else { helper = (depth0 && depth0.rating); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
+  buffer += escapeExpression(stack1)
+    + ".0</span>"
+    + escapeExpression((helper = helpers['rating-symbol'] || (depth0 && depth0['rating-symbol']),options={hash:{},data:data},helper ? helper.call(depth0, (depth0 && depth0.rating), options) : helperMissing.call(depth0, "rating-symbol", (depth0 && depth0.rating), options)))
+    + "</div>\n    <div class=\"country-pic\"><img src=\"images/";
+  if (helper = helpers.country) { stack1 = helper.call(depth0, {hash:{},data:data}); }
+  else { helper = (depth0 && depth0.country); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
+  buffer += escapeExpression(stack1)
+    + ".png\"/><span class=\"hidden country\">";
+  if (helper = helpers.country) { stack1 = helper.call(depth0, {hash:{},data:data}); }
+  else { helper = (depth0 && depth0.country); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
+  buffer += escapeExpression(stack1)
+    + "</span></div>\n    <div class=\"style\" style=\"background: "
+    + escapeExpression((helper = helpers.beerColor || (depth0 && depth0.beerColor),options={hash:{},data:data},helper ? helper.call(depth0, (depth0 && depth0.style), options) : helperMissing.call(depth0, "beerColor", (depth0 && depth0.style), options)))
+    + "\"></div>\n  </aside>\n  <div class=\"top\">\n    <span class=\"brewery\">";
   if (helper = helpers.brewery) { stack1 = helper.call(depth0, {hash:{},data:data}); }
   else { helper = (depth0 && depth0.brewery); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
   buffer += escapeExpression(stack1)
@@ -16,35 +32,17 @@ function program1(depth0,data) {
   if (helper = helpers.name) { stack1 = helper.call(depth0, {hash:{},data:data}); }
   else { helper = (depth0 && depth0.name); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
   buffer += escapeExpression(stack1)
-    + "</span>\n  </div>\n  <div class=\"middle\">\n    <span class=\"rating\"><span class=\"hidden\">";
-  if (helper = helpers.rating) { stack1 = helper.call(depth0, {hash:{},data:data}); }
-  else { helper = (depth0 && depth0.rating); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
-  buffer += escapeExpression(stack1)
-    + ".0</span><img class=\"rating-image\" src=\"images/"
-    + escapeExpression((helper = helpers.rating2 || (depth0 && depth0.rating2),options={hash:{},data:data},helper ? helper.call(depth0, (depth0 && depth0.rating), options) : helperMissing.call(depth0, "rating2", (depth0 && depth0.rating), options)))
-    + ".svg\"/></span>\n    <div class=\"circle country-pic\" style=\"background-image: url(images/";
-  if (helper = helpers.country) { stack1 = helper.call(depth0, {hash:{},data:data}); }
-  else { helper = (depth0 && depth0.country); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
-  buffer += escapeExpression(stack1)
-    + ".png\"><span class=\"hidden country\">";
-  if (helper = helpers.country) { stack1 = helper.call(depth0, {hash:{},data:data}); }
-  else { helper = (depth0 && depth0.country); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
-  buffer += escapeExpression(stack1)
-    + "</span></div>\n    <span class=\"style\">";
-  if (helper = helpers.style) { stack1 = helper.call(depth0, {hash:{},data:data}); }
-  else { helper = (depth0 && depth0.style); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
-  buffer += escapeExpression(stack1)
-    + "</span>\n    <div class=\"circle\"><span class=\"month\">"
+    + "</span>\n  </div>\n  <!--<div class=\"middle\">\n    <div class=\"circle\"><span class=\"month\">"
     + escapeExpression((helper = helpers.month || (depth0 && depth0.month),options={hash:{},data:data},helper ? helper.call(depth0, (depth0 && depth0.drinkMonth), options) : helperMissing.call(depth0, "month", (depth0 && depth0.drinkMonth), options)))
     + "</span><br/><span class=\"year\">";
   if (helper = helpers.drinkYear) { stack1 = helper.call(depth0, {hash:{},data:data}); }
   else { helper = (depth0 && depth0.drinkYear); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
   buffer += escapeExpression(stack1)
-    + "</span></div>\n    <div class=\"circle\">";
+    + "</span></div>\n    <div class=\"circle style\">";
   if (helper = helpers.style) { stack1 = helper.call(depth0, {hash:{},data:data}); }
   else { helper = (depth0 && depth0.style); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
   buffer += escapeExpression(stack1)
-    + "</div>\n  </div>\n  <div class=\"bottom\">\n    <span class=\"date-small\">";
+    + "</div>\n  </div>-->\n  <div class=\"bottom\">\n    <span class=\"date-small\">";
   if (helper = helpers.drinkMonth) { stack1 = helper.call(depth0, {hash:{},data:data}); }
   else { helper = (depth0 && depth0.drinkMonth); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
   buffer += escapeExpression(stack1)
@@ -74,7 +72,7 @@ function program1(depth0,data) {
   if (helper = helpers.drinkLocationCity) { stack1 = helper.call(depth0, {hash:{},data:data}); }
   else { helper = (depth0 && depth0.drinkLocationCity); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
   buffer += escapeExpression(stack1)
-    + "</span>\n      </span>\n    </span>\n  </div>\n</li>\n";
+    + "</span>\n      </span>\n    </span>\n  </div>\n</div>\n";
   return buffer;
   }
 

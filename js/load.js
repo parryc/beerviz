@@ -12,22 +12,35 @@ colorscale.create([
         {'value':5,'color':{'r':0,'g':0,'b':0}}
         ], "beer2");
 
+//SRM value from
+//http://www.twobeerdudes.com/beer/srm
+//http://www.brewersfriend.com/2009/02/28/beer-styles-srm-color-chart/
+
+colorscale.create([
+  {'value':0, 'color':{r:0,g:0,b:0}},
+  {'value':2, 'color':{r:255,g:255,b:69}},
+  {'value':3, 'color':{r:255,g:233,b:62}},
+  {'value':4, 'color':{r:254,g:216,b:73}},
+  {'value':6, 'color':{r:255,g:168,b:70}},
+  {'value':9, 'color':{r:244,g:159,b:68}}
+  ], "SRM");
+
 Handlebars.registerHelper('color', function(rating) {
   return colorscale.beer2.pick(rating);
 });
 
-Handlebars.registerHelper('rating2', function(rating) {
+Handlebars.registerHelper('rating-symbol', function(rating) {
   var parts = (""+rating).split('.');
   if(parts[0] === "0")
-    return "bad";
+    return "☠";
   if(parts[0] === "1")
-    return "meh";
+    return "⃠";
   if(parts[0] === "2")
-    return "ok";
+    return "";
   if(parts[0] === "3")
-    return "good";
+    return "☆";
   if(parts[0] === "4")
-    return "great";
+    return "★";
 });
 
 Handlebars.registerHelper('twoDigitYear', function(year){
@@ -62,6 +75,16 @@ Handlebars.registerHelper('month', function(drinkMonth){
   var months = "Jan_Feb_Mar_Apr_May_Jun_Jul_Aug_Sep_Oct_Nov_Dec".split("_");
   return months[parseInt(drinkMonth,10)-1];
 });
+
+Handlebars.registerHelper('beerColor', function(style){
+  return colorscale.SRM.pick(colorMap[style]);
+});
+
+var colorMap = {
+  'Pale Lager':2,
+  'Pilsener':3,
+  'Hefeweizen':6.5
+};
 
 
 
