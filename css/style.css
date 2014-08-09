@@ -3,15 +3,14 @@ html {
 	color: rgb(236,236,236);
 }
 
+html, body {
+	margin: 0;
+	padding: 0;
+}
+
 p a, footer a {
 	color: rgb(111,176,235);
 }
-
-body,aside {
-	padding: 10px;
-}
-
-
 
 table {
 	width: 100%;
@@ -63,8 +62,32 @@ th {
 	font-size: 1.3em;
 }
 
-#container {
+.full-width {
 	width: 100%;
+}
+
+.banner, .banner-small {
+	background: rgb(232,100,111);
+	color: white;
+	vertical-align: center;
+	padding-left: 15%;
+}
+
+.banner {
+	font-size: 2.5em;
+	height: 3em;
+	line-height: 3em;
+}
+
+.banner-small {
+	font-size: 1.5em;
+	height: 2em;
+	line-height: 2em;
+}
+
+
+#container {
+	/*width: 100%;*/
 	margin: 0 auto;
 	color: rgb(49,49,49);
 	background: rgb(236,236,236);
@@ -76,26 +99,20 @@ th {
 
 
 #full-beer-list {
-	padding-left: 6%;
+	padding-left: 25%;
 }
 
 
 .beer {
 	padding: 15px;
-	border: 4px solid black;
-	background: white;
-	display: inline-block;
-	width: 350px;
-	margin-right: 1.6667%;
-	margin-bottom: 1.6667%;
-	height: 100px;
-	vertical-align: top;
+	/*height: 70px;*/
 }
 
 .beer aside {
 	float: left;
-	margin-top: -7px;
 	text-align: center;
+	height: 100%;
+	margin-right: 15px;
 }
 
 .centered {
@@ -123,19 +140,6 @@ th {
 	margin-left: 10px;
 }*/
 
-.country, .country-pic {
-	background-size: 55px;
-	background-position: 23% 13%;
-/*	width: 51px;
-	border: black solid 2px;
-	-moz-border-radius: 50px;
-	-webkit-border-radius: 50px;
-	-o-border-radius: 50px;
-	-ms-border-radius: 50px;
-	-khtml-border-radius: 50px;
-	border-radius: 50px;*/
-/*	margin-top: -4px;*/
-}
 
 .country-pic img {
 	height: 1.3em;
@@ -224,9 +228,7 @@ th {
 }
 
 .middle {
-	font-size: 1.4em;
-	margin-top: 5px;
-	margin-bottom: 5px;
+	font-size: 1em;
 }
 
 .pint {
@@ -252,6 +254,9 @@ th {
 
 .search {
 	text-align: center;
+	height: 2em;
+	width: 50%;
+	font-size: 2em;
 }
 
 .sub-category {
@@ -260,18 +265,6 @@ th {
 
 .sub-category:hover {
 	background: #ddd;
-}
-
-.style {
-	-moz-border-radius: 50px;
-	-webkit-border-radius: 50px;
-	-o-border-radius: 50px;
-	-ms-border-radius: 50px;
-	-khtml-border-radius: 50px;
-	border-radius: 50px;
-	border: black solid 2px;
-	width: 20px;
-	height: 20px;
 }
 
 .top {

@@ -104,4 +104,13 @@ d3.json("beer.json", function(data) {
     page: 10
   },
   beerList = new List('beer-list-container', options);
+  
+  var beers = document.getElementsByClassName('beer');
+  for (var i = beers.length - 1; i >= 0; i--) {
+    beers[i].addEventListener('click', function(){
+      console.log(this);
+      this.getElementsByClassName('bottom')[0].classList.toggle('hidden');
+    });
+  }
 });
+
