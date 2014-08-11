@@ -98,14 +98,11 @@ th {
 }
 
 
-#full-beer-list {
-	padding-left: 25%;
-}
 
 
 .beer {
 	padding: 15px;
-	/*height: 70px;*/
+	margin-left: 25%;
 }
 
 .beer aside {

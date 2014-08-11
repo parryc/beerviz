@@ -36,11 +36,11 @@ Handlebars.registerHelper('rating-symbol', function(rating) {
   if(parts[0] === "1")
     return "⃠";
   if(parts[0] === "2")
-    return "";
-  if(parts[0] === "3")
     return "☆";
-  if(parts[0] === "4")
+  if(parts[0] === "3")
     return "★";
+  if(parts[0] === "4")
+    return "♥";
 });
 
 Handlebars.registerHelper('twoDigitYear', function(year){
@@ -76,6 +76,16 @@ Handlebars.registerHelper('month', function(drinkMonth){
   return months[parseInt(drinkMonth,10)-1];
 });
 
+Handlebars.registerHelper('banner', function(el){
+  var months = "January_February_March_April_May_June_July_August_September_October_November_December".split("_");
+  var parts = el.split('-');
+  if(parts.length > 1)
+    return months[parseInt(parts[1],10)-1]+", "+parts[0];
+  else
+    return el;
+});
+
+
 Handlebars.registerHelper('beerColor', function(style){
   return colorscale.SRM.pick(colorMap[style]);
 });
@@ -90,7 +100,16 @@ var colorMap = {
 
 d3.json("beer.json", function(data) {
   window.beerlist = data;
-  document.getElementById('full-beer-list').innerHTML = compiledTemplate(data);
+  beer.init(data);
+  groups = {};
+  grouper = 'style';
+  for (var el in beer.index[grouper]) {
+    groups[el] = beer.lookup(beer.index[grouper][el]);
+  }
+
+  console.log(groups);
+
+  document.getElementById('full-beer-list').innerHTML = compiledTemplate(groups);
 
   var fuzzyOptions = {
     searchClass: "fuzzy-search",
@@ -101,10 +120,10 @@ d3.json("beer.json", function(data) {
   },
   options = {
     valueNames: [ 'name', 'brewery', 'rating', 'date', 'country', 'location-country', 'style' ],
-    page: 10
+    page: 2000
   },
   beerList = new List('beer-list-container', options);
-  
+
   var beers = document.getElementsByClassName('beer');
   for (var i = beers.length - 1; i >= 0; i--) {
     beers[i].addEventListener('click', function(){
