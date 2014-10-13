@@ -69,7 +69,8 @@ path {
 <script src="js/drink.js"></script>
 <script>
 $(document).ready(function(){
-  var styles = beer.hierarchies.print("style"), styles = beer.hierarchies.print("rating"),
+  //, styles = beer.hierarchies.print("rating")
+  var styles = beer.hierarchies.print("style"),
       level, count, countNext, startTags = "", endTags = "", menu = "";
 
   for (var i = 0; i < styles.length; i++) {
@@ -127,8 +128,8 @@ $(document).ready(function(){
   }
   load('beer.json', function(beers){
     beer.init(beers);
-    //multiline(beer.formatMultiseries(["Ales","Lagers"],"styles","count"),"Counts");
-    multiline(beer.formatMultiseries(["Great","Good","Ok","Bad","Meh"],"ratings","count"),"Counts");
+    multiline(beer.formatMultiseries(["Ales","Lagers"],"styles","count"),"Counts");
+    //multiline(beer.formatMultiseries(["Great","Good","Ok","Bad","Meh"],"ratings","count"),"Counts");
   });
 
 });
