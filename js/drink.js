@@ -38,7 +38,7 @@
             },
             "Stouts/Porters" : ["Baltic Porter","Dry Stout","Foreign Stout","Imperial Stout","Smoked","Strong Porter","Porter","Sweet Stout","Stout"],
             "Flavored" : ["Spice","Fruit Beer"],
-            "Lambics" : ["Lambic","Brown Sour","Sour","Gueuze"]
+            "Lambics" : ["Lambic","Flanders Sour","Sour","Gueuze"]
           }
         },
         rating: {
@@ -127,6 +127,7 @@
       //ex. ["brewery.Ommegang","drinkLocationCity.Ithaca"]
       get: function(accessors){
         var temp = [],
+            index = this.index,
             split, intersect;
 
         for (var i = 0; i < accessors.length; i++) {
@@ -152,7 +153,7 @@
       lookget: function(accessors) {
         if(!_.isArray(accessors))
           accessors = [accessors];
-        return this._lookup(this.get(accessors));
+        return this.lookup(this.get(accessors));
       },
 
       /*
@@ -335,6 +336,23 @@
         });
 
         return aggregated;
+      },
+
+      print: function(list, onlyAboveFive) {
+        var tabs = "";
+        for(var l in list){ 
+          if((list[l].count > 5 && onlyAboveFive) || !onlyAboveFive) {
+            if(list[l].name.length > 14)
+              tabs = "\t";
+            else if(list[l].name.length >= 12)
+              tabs = "\t\t";
+            else if(list[l].name.length >= 7)
+              tabs = "\t\t";
+            else
+              tabs = "\t\t\t"; 
+            console.log(list[l].name + tabs + 'count:\t' + list[l].count +'\tavg:\t'+ list[l].average + '\tavg abv:\t' + list[l].averageAbv); 
+          }
+        }
       },
 
       /*
