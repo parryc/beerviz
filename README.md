@@ -18,16 +18,41 @@ Currently this is not a full stack application.  It's *almost* a full stack appl
 * The index page, which is a speedy, mobile-oriented (I use it at the grocery store), filterable, sortable list of all the beer I've ever had. 
 * A stats page, which is still mostly a work in progress, which you can drill down and look at beers in more detail.
 
-## Installation
+# Installation
 
-Node backend
+# Version
+````v1.0a````
+Still in alpha - I cannot guarantee anything will work. Especially I rewrote this shit in Python.
 
-* Install [Node.js](nodejs.org/‎)
-* Install [MongoDB](www.mongodb.org/‎)
-* Download the source code and run `npm install` in the node directory
-* `node app.js` to start the server
-* Navigate to `localhost:8332/add` to add and `localhost:8332/edit` (they're contentEditable divs) 
-* Export: `mongoexport --jsonArray --db beerviz --collection beers --out beer.json --journal`
+# Follow along at home!
+
+## Pre-requisites
+* Postgres and associated command-line tools must be installed
+* virtualenv must be installed
+
+
+Activate Python virtual environment and install (you may need to delete ```.env/include/python2.7```)
+````
+cd /path/to/directory
+virtualenv --no-site-packages --distribute .env && source .env/bin/activate && pip install -r requirements.txt
+. .env/bin/activate
+````
+
+Setup database (after installing Postgres)
+
+````
+createdb beer
+python manage.py db init
+````
+If migrations already exist, use ```python manage.py db upgrade``` instead of ```python manage.py db init```. 
+
+
+## Database migration
+````
+python manage.py db migrate
+python manage.py db upgrade
+````
+
 
 Webpages
 

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html ng-app>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" user-scalable="no">
+  <meta charset=utf-8 />
+  <title>Beers I Have Known and Loved</title>
+  <link rel="stylesheet" type="text/css" href="css/typeplate.css">
+  <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+  <link rel="stylesheet" type="text/css" href="css/style.css">
+  <link rel="stylesheet" type="text/css" href="css/fonts/fonts.css">
+</head>
+<body>
+  <div id="container">
+    <div class="row-fluid centered">
+      <img src="logo.png"/>
+      <br/><br/>
+      <h1 id="header">Beers I Have Known and Loved</h1>
+      <div id="might-be-mobile"></div>
+    </div>
+    <div id="search-box">
+      <br/>
+      <div id="beer-list-container">
+        <div class="row-fluid centered">
+            <input id="search" class="search" placeholder="Search" />
+        </div>
+        <br/>
+        <div id="sorters">
+          <li class="row-fluid beer">
+            <div class="span5">
+              <span class="sort rating" data-sort="rating">★</span>
+              <span class="sort brewery" data-sort="brewery">Brewery</span> - <span class="sort name" data-sort="name">Beer name</span>
+            </div>
+            <div class="span3">
+              <img class="sort country" src="images/Unknown.png" title="Sort by Country" data-sort="country"/> 
+              <span class="sort style" data-sort="style">Style</span>
+            </div>
+            <div class="span4">
+              <span class="sort date-small" data-sort="date">Date</span><span class="sort date" data-sort="date">Date</span>
+              <span class="sort location" data-sort="location-country">Drink Location</span>
+            </div>
+          </li>
+        </div>
+        <hr style="width:50%; margin-left: 15px auto;"/>
+        <ul id="full-beer-list" class="list">
+         {% for beer in beers %}
+         <li>{{beer.brewery}} {{beer.name}}</li>
+         {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+</body>
+<script src="js/libs/colorscale.js"></script>
+<script src="js/libs/d3.v3.min.js"></script>
+<script src="js/libs/handlebars.runtime-v1.1.2.js"></script>
+<script src="js/libs/list.min.js"></script>
+<script src="js/libs/list.fuzzysearch.min.js"></script>
+<script src="js/templates.js"></script>
+<script src="js/load.js"></script>
+</html>
